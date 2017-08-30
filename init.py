@@ -26,11 +26,11 @@ def main(stdscr):
       # process input
       if (key_in == "KEY_LEFT"):
           char['x'] -= 1
-      if (key_in == "KEY_RIGHT"):
+      elif (key_in == "KEY_RIGHT"):
           char['x'] += 1
-      if (key_in == "KEY_UP"):
+      elif (key_in == "KEY_UP"):
           char['y'] -= 1
-      if (key_in == "KEY_DOWN"):
+      elif (key_in == "KEY_DOWN"):
           char['y'] += 1
 
 
