@@ -1,11 +1,21 @@
 from curses import *
+from tile import Tile
+
+
+level = []
+
+for x in range(0,10):
+    for y in range(0,10):
+        tile = Tile(x,y)
+        level.append(tile)
+
+
 
 def main(stdscr):
 
     curs_set(0)
     init_pair(1, COLOR_MAGENTA, COLOR_BLACK)
 
-    row = "++++++++++++++++"
     char = {"x": 4, "y": 4}
     key_in = ""
 
@@ -14,8 +24,8 @@ def main(stdscr):
       stdscr.clear()
 
       # draw level
-      for y in range(0,10):
-          stdscr.addstr(y, 0, row);
+      for tile in level:
+          stdscr.addstr(tile.location['y'], tile.location['x'], tile.char())
 
       # draw character
       stdscr.addstr(char['y'], char['x'], '@', color_pair(1))
