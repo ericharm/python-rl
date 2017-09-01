@@ -12,7 +12,7 @@ class Game:
         tile = self.level.tiles[char['x']][char['y']]
         tile.set_type(type)
 
-    def run(self, stdscr):
+    def run(self, screen):
 
         curs_set(0)
         init_pair(1, COLOR_MAGENTA, COLOR_BLACK)
@@ -24,12 +24,12 @@ class Game:
 
         while (key_in != "q"):
           # draw
-          stdscr.clear()
-          self.level.draw(stdscr)
-          stdscr.addstr(char['y'], char['x'], '@', color_pair(1))
+          screen.clear()
+          self.level.draw(screen)
+          screen.addstr(char['y'], char['x'], '@', color_pair(1))
 
           # get input
-          key_in = stdscr.getkey()
+          key_in = screen.getkey()
           if (key_in == "KEY_LEFT" and char['x'] > 0):
               char['x'] -= 1
           elif (key_in == "KEY_RIGHT" and char['x'] < self.LEVEL_WIDTH - 1):
