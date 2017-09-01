@@ -17,11 +17,11 @@ class Game:
     return self.level.tiles[x][y].type == "floor"
 
   def build_map(self, screen, char):
-    target = {"x": 28, "y": 12}
+    target = {"x": 50, "y": 12}
     direction = ""
 
     while (char["x"] != target["x"] and char["y"] != target["y"]):
-      direction = random.sample(["n","s","e","w"], 1)[0]
+      direction = random.sample(["n","s","e", "e", "w", "w"], 1)[0]
 
       # draw
       screen.clear()
