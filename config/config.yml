@@ -6,3 +6,8 @@ map:
   target:
     x: 50
     y: 18
+
+hero:
+  start:
+    x: 4
+    y: 4
