@@ -13,14 +13,11 @@ class Game:
     tile = self.level.tiles[char['x']][char['y']]
     tile.set_type(type)
 
-  def run(self, screen):
+  def is_floor(self, x, y):
+    return self.level.tiles[x][y].type == "floor"
 
-    curs_set(0)
-    init_pair(1, COLOR_MAGENTA, COLOR_BLACK)
-
-    char = {"x": 4, "y": 4}
+  def build_map(self, screen, char):
     target = {"x": 28, "y": 12}
-
     direction = ""
 
     while (char["x"] != target["x"] and char["y"] != target["y"]):
@@ -44,6 +41,14 @@ class Game:
       # update
       self.set_tile_type_at_char(char, "floor")
 
+  def run(self, screen):
+
+    curs_set(0)
+    init_pair(1, COLOR_MAGENTA, COLOR_BLACK)
+
+    char = {"x": 4, "y": 4}
+    self.build_map(screen, char)
+
     key_in = ""
 
     while (key_in != "q"):
@@ -54,13 +59,15 @@ class Game:
 
       # get input
       key_in = screen.getkey()
-      if (key_in == "KEY_LEFT" and char['x'] > 0):
+      x = char['x']
+      y = char['y']
+      if (key_in == "KEY_LEFT" and self.is_floor(x-1, y)):
         char['x'] -= 1
-      elif (key_in == "KEY_RIGHT" and char['x'] < self.width - 1):
+      elif (key_in == "KEY_RIGHT" and self.is_floor(x+1, y)):
         char['x'] += 1
-      elif (key_in == "KEY_UP" and char['y'] > 0):
+      elif (key_in == "KEY_UP" and self.is_floor(x, y-1)):
         char['y'] -= 1
-      elif (key_in == "KEY_DOWN" and char['y'] < self.height - 1):
+      elif (key_in == "KEY_DOWN" and self.is_floor(x, y+1)):
         char['y'] += 1
 
       # update
