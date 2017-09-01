@@ -1,5 +1,6 @@
 from level import Level
 from curses import *
+import random
 
 class Game:
 
@@ -18,7 +19,7 @@ class Game:
     init_pair(1, COLOR_MAGENTA, COLOR_BLACK)
 
     char = {"x": 4, "y": 4}
-    target = {"x": 20, "y": 12}
+    target = {"x": 28, "y": 12}
 
     direction = ""
 
@@ -31,13 +32,13 @@ class Game:
       screen.addstr(char['y'], char['x'], '@', color_pair(1))
 
       # get input
-      if (direction == "KEY_LEFT" and char['x'] > 0):
+      if (direction == "w" and char['x'] > 0):
         char['x'] -= 1
-      elif (direction == "KEY_RIGHT" and char['x'] < self.width - 1):
+      elif (direction == "e" and char['x'] < self.width - 1):
         char['x'] += 1
-      elif (direction == "KEY_UP" and char['y'] > 0):
+      elif (direction == "n" and char['y'] > 0):
         char['y'] -= 1
-      elif (direction == "KEY_DOWN" and char['y'] < self.height - 1):
+      elif (direction == "s" and char['y'] < self.height - 1):
         char['y'] += 1
 
       # update
