@@ -42,4 +42,3 @@ class Game:
           # update
           self.set_tile_type_at_char(char, "floor")
 
-
