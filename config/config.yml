@@ -6,6 +6,9 @@ map:
   target:
     x: 50
     y: 18
+  rooms:
+    max_width: 10
+    max_height: 5
 
 hero:
   start:

@@ -20,8 +20,19 @@ class Game:
   def build_map(self, screen, char):
     # target = self.config['map']['target']
     # direction = ""
-    self.level.add_room(3, 1, 5, 3)
+    # self.level.add_room(3, 1, 5, 3)
+    for attempt in range(0,10):
+      odd_x = 1 + (random.randint(0, self.level.width / 2) * 2)
+      odd_y = 1 + (random.randint(0, self.level.height / 2) * 2)
 
+      # odd_x = 1 + (random.randint(0, 50) * 2)
+      # odd_y = 1 + (random.randint(0, 25) * 2)
+
+      rooms = self.config['map']['rooms']
+      odd_width = 1 + (random.randint(0, rooms['max_width'] / 2) * 2)
+      odd_height = 1 + (random.randint(0, rooms['max_height'] / 2) * 2)
+
+      self.level.add_room(odd_x, odd_y, odd_width, odd_height)
     # while (char["x"] != target["x"] and char["y"] != target["y"]):
       # direction = random.sample(["n","s","e", "e", "w", "w"], 1)[0]
 
