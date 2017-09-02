@@ -21,3 +21,8 @@ class Level:
       for y in range(0,self.height):
         self.tiles[x][y].draw(screen)
 
+  def add_room(self, x, y, width, height):
+    for column in range(x, width):
+      for row in range(y, height):
+        if (column < self. width and row < self.height):
+          self.tiles[column][row].set_type("floor")

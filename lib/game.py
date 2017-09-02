@@ -18,29 +18,25 @@ class Game:
     return self.level.tiles[x][y].type == "floor"
 
   def build_map(self, screen, char):
-    target = self.config['map']['target']
-    direction = ""
+    # target = self.config['map']['target']
+    # direction = ""
+    self.level.add_room(3, 1, 5, 3)
 
-    while (char["x"] != target["x"] and char["y"] != target["y"]):
-      direction = random.sample(["n","s","e", "e", "w", "w"], 1)[0]
-
-      # draw
-      screen.clear()
-      self.level.draw(screen)
-      screen.addstr(char['y'], char['x'], '@', color_pair(1))
+    # while (char["x"] != target["x"] and char["y"] != target["y"]):
+      # direction = random.sample(["n","s","e", "e", "w", "w"], 1)[0]
 
       # get input
-      if (direction == "w" and char['x'] > 0):
-        char['x'] -= 1
-      elif (direction == "e" and char['x'] < self.width - 1):
-        char['x'] += 1
-      elif (direction == "n" and char['y'] > 0):
-        char['y'] -= 1
-      elif (direction == "s" and char['y'] < self.height - 1):
-        char['y'] += 1
+      # if (direction == "w" and char['x'] > 0):
+        # char['x'] -= 1
+      # elif (direction == "e" and char['x'] < self.width - 1):
+        # char['x'] += 1
+      # elif (direction == "n" and char['y'] > 0):
+        # char['y'] -= 1
+      # elif (direction == "s" and char['y'] < self.height - 1):
+        # char['y'] += 1
 
       # update
-      self.set_tile_type_at_char(char, "floor")
+      # self.set_tile_type_at_char(char, "floor")
 
   def run(self, screen):
 
