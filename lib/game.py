@@ -15,15 +15,26 @@ class Game:
   def run(self, screen):
 
     self.init_curses()
+    playing = True
     key_in = ""
-    while (key_in != "q"):
+
+    while (playing != False):
       # draw
       screen.clear()
       self.level.draw(screen)
       screen.addstr(self.hero.y, self.hero.x, '@', color_pair(1))
-
       # get input
-      key_in = screen.getkey()
+      playing = self.handle_input(screen)
+
+  def init_curses(self):
+    curs_set(0)
+    init_pair(1, COLOR_MAGENTA, COLOR_BLACK)
+
+  def is_floor(self, x, y):
+        return self.level.tiles[x][y].type == "floor"
+
+  def handle_input(self, keyboard):
+      key_in = keyboard.getkey()
       x = self.hero.x
       y = self.hero.y
       if (key_in == "KEY_LEFT" and self.is_floor(x - 1, y)):
@@ -34,12 +45,6 @@ class Game:
         self.hero.y -= 1
       elif (key_in == "KEY_DOWN" and self.is_floor(x, y + 1)):
         self.hero.y += 1
-
-  def init_curses(self):
-    curs_set(0)
-    init_pair(1, COLOR_MAGENTA, COLOR_BLACK)
-
-  def is_floor(self, x, y):
-        return self.level.tiles[x][y].type == "floor"
-
+      elif (key_in == "q"):
+        return False
 
