@@ -13,25 +13,17 @@ class Game:
     self.hero = Hero(hero_start['x'], hero_start['y'])
 
   def run(self, screen):
-
     self.init_curses()
     playing = True
-    key_in = ""
-
     while (playing != False):
-      # draw
-      screen.clear()
-      self.level.draw(screen)
-      screen.addstr(self.hero.y, self.hero.x, '@', color_pair(1))
-      # get input
+      self.draw(screen)
       playing = self.handle_input(screen)
+      self.update()
 
-  def init_curses(self):
-    curs_set(0)
-    init_pair(1, COLOR_MAGENTA, COLOR_BLACK)
-
-  def is_floor(self, x, y):
-        return self.level.tiles[x][y].type == "floor"
+  def draw(self, screen):
+    # screen.clear()
+    self.level.draw(screen)
+    screen.addstr(self.hero.y, self.hero.x, '@', color_pair(1))
 
   def handle_input(self, keyboard):
       key_in = keyboard.getkey()
@@ -47,4 +39,14 @@ class Game:
         self.hero.y += 1
       elif (key_in == "q"):
         return False
+
+  def update(self):
+    update = True
+
+  def init_curses(self):
+    curs_set(0)
+    init_pair(1, COLOR_MAGENTA, COLOR_BLACK)
+
+  def is_floor(self, x, y):
+        return self.level.tiles[x][y].type == "floor"
 

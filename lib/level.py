@@ -14,6 +14,7 @@ class Level:
     generator = Generator()
     generator.generate_level(self, config)
     self.insert_rooms(generator.rooms)
+    generator.generate_corridors()
 
   def create_empty_tiles(self):
     for x in range(0,self.width):
@@ -26,9 +27,27 @@ class Level:
 
   def insert_rooms(self, rooms):
     for room in rooms:
+      self.insert_walls(room)
       for column in range (room.x, room.x + room.width):
         for row in range (room.y, room.y + room.height):
           self.tiles[column][row].set_type('floor')
+
+  def insert_walls(self, room): # needs test
+    x = room.x - 1
+    y = room.y - 1
+    width = room.width + 2
+    height = room.height + 2
+    for column in range (x, x + width):
+      for row in range (y, y + height):
+        self.tiles[column][row].set_type('wall')
+
+  def get_odd_empty_tiles(self): # needs test
+    odd_empty_tiles = []
+    for column in range(0, self.width):
+      for row in range(0, self.height):
+        if self.tiles[column][row].empty() and self.tiles[column][row].odd():
+          odd_empty_tiles.append(self.tiles[column][row])
+    return odd_empty_tiles
 
   def draw(self, screen):
     for x in range(0,self.width):
@@ -59,6 +78,30 @@ class Generator:
     wd = self.odd_number(room_config['min_width'], room_config['max_width'])
     ht = self.odd_number(room_config['min_height'], room_config['max_height'])
     return Room(x, y, wd, ht)
+
+  def generate_corridors(self): # might not need test
+    # gonna do this until level.get_odd_tiles is empty
+    # for attempt in range(0, 100):
+    while (len(self.level.get_odd_empty_tiles()) > 2):
+      tiles = self.level.get_odd_empty_tiles()
+      # random_tile = tiles[random.randint(0, len(tiles))]
+      random_tile = tiles[0]
+      tiles_at_distance_two = list(filter(lambda tile: tile.at_distance(2, random_tile), tiles))
+      if len(tiles_at_distance_two) == 0:
+        random_tile.set_type("sempty")
+      else:
+        tile_at_distance_2 = tiles_at_distance_two[random.randint(0, len(tiles_at_distance_two)) - 1]
+        # random tile becomes corridor
+        random_tile.set_type("corridor")
+        # random tile at distance two becomes corridor
+        target_x = tile_at_distance_2.location['x']
+        target_y = tile_at_distance_2.location['y']
+        self.level.tiles[target_x][target_y].set_type("corridor")
+        # tile between becomes corridor
+        direction = tile_at_distance_2.direction_from(random_tile)
+        between_x = direction[0] + target_x
+        between_y = direction[1] + target_y
+        self.level.tiles[between_x][between_y].set_type("corridor")
 
   def odd_number(self, min_, max_):
     number = (random.randint(min_, max_))

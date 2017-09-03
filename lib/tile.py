@@ -9,11 +9,15 @@ class Tile:
 
   def char(self):
     if self.type == "floor":
-      return "+"
+      return "."
     elif self.type == "wall":
-      return "="
+      return "#"
     elif self.type == "empty":
       return " "
+    elif self.type == "sempty":
+      return "x"
+    elif self.type == "corridor":
+      return "="
 
   def color(self):
     if self.visible:
@@ -30,4 +34,34 @@ class Tile:
 
   def draw(self, screen):
      screen.addstr(self.location['y'], self.location['x'], self.char())
+
+  def odd(self): # needs test
+    return self.location['x'] % 2 != 0 and self.location['y'] % 2 != 0
+
+  def empty(self): # needs test
+    return self.type == "empty"
+
+  def at_distance(self, n, target): # needs test
+    is_n_north = (target.location['x'] is self.location['x'] and
+                   target.location['y'] is self.location['y'] - n)
+    is_n_south = (target.location['x'] is self.location['x'] and
+                   target.location['y'] is self.location['y'] + n)
+    is_n_west = (target.location['x'] is self.location['x'] - n and
+                   target.location['y'] is self.location['y'])
+    is_n_east = (target.location['x'] is self.location['x'] + n and
+                   target.location['y'] is self.location['y'])
+    return (is_n_north or is_n_south or is_n_west or is_n_east)
+
+  def direction_from(self, tile): # needs test
+    x = 0
+    y = 0
+    if self.location['x'] < tile.location['x']:
+      x = 1
+    if self.location['x'] > tile.location['x']:
+      x = -1
+    if self.location['y'] < tile.location['y']:
+      y = 1
+    if self.location['y'] > tile.location['y']:
+      y = -1
+    return (x, y)
 
