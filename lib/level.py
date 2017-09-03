@@ -13,6 +13,7 @@ class Level:
     self.create_empty_tiles()
     generator = Generator()
     generator.generate_level(self, config)
+    self.insert_rooms(generator.rooms)
 
   def create_empty_tiles(self):
     for x in range(0,self.width):
@@ -22,6 +23,12 @@ class Level:
         tile = Tile(x,y)
         tile.set_type('empty')
         self.tiles[x][y] = tile
+
+  def insert_rooms(self, rooms):
+    for room in rooms:
+      for column in range (room.x, room.x + room.width):
+        for row in range (room.y, room.y + room.height):
+          self.tiles[column][row].set_type('floor')
 
   def draw(self, screen):
     for x in range(0,self.width):
@@ -38,7 +45,6 @@ class Generator:
     self.level = level
     self.config = config
     self.generate_rooms()
-    self.insert_rooms_into_level()
 
   def generate_rooms(self):
     room_config = self.config['rooms']
@@ -60,13 +66,6 @@ class Generator:
       return number + 1
     else:
       return number
-
-  def insert_rooms_into_level(self):
-    level = self.level
-    for room in self.rooms:
-      for column in range (room.x, room.x + room.width):
-        for row in range (room.y, room.y + room.height):
-          level.tiles[column][row].set_type('floor')
 
 
 class Room:

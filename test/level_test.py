@@ -46,11 +46,11 @@ class LevelTest(unittest.TestCase):
     self.assertGreater(len(self.generator.rooms), 0,
                        "Generator should have created at least one room")
 
-  def test_generator_insert_rooms_into_level(self):
+  def test_level_inserts_rooms(self):
     tiles = self.level.tiles
     self.assertEqual(0, self.floor_tile_count())
     self.generator.generate_rooms()
-    self.generator.insert_rooms_into_level()
+    self.level.insert_rooms(self.generator.rooms)
     self.assertGreater(self.floor_tile_count(), 0)
 
   def test_generator_gets_odd_numbers(self):
