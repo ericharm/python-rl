@@ -9,6 +9,9 @@ class Game:
     self.level = Level(config['level'])
     self.level.generate(config['level'])
 
+  def is_floor(self, x, y):
+        return self.level.tiles[x][y].type == "floor"
+
   def run(self, screen):
 
     curs_set(0)
@@ -26,14 +29,14 @@ class Game:
 
       # get input
       key_in = screen.getkey()
-      # x = char['x']
-      # y = char['y']
-      # if (key_in == "KEY_LEFT" and self.is_floor(x - 1, y)):
-        # char['x'] -= 1
-      # elif (key_in == "KEY_RIGHT" and self.is_floor(x + 1, y)):
-        # char['x'] += 1
-      # elif (key_in == "KEY_UP" and self.is_floor(x, y - 1)):
-        # char['y'] -= 1
-      # elif (key_in == "KEY_DOWN" and self.is_floor(x, y + 1)):
-        # char['y'] += 1
+      x = char['x']
+      y = char['y']
+      if (key_in == "KEY_LEFT" and self.is_floor(x - 1, y)):
+        char['x'] -= 1
+      elif (key_in == "KEY_RIGHT" and self.is_floor(x + 1, y)):
+        char['x'] += 1
+      elif (key_in == "KEY_UP" and self.is_floor(x, y - 1)):
+        char['y'] -= 1
+      elif (key_in == "KEY_DOWN" and self.is_floor(x, y + 1)):
+        char['y'] += 1
 
