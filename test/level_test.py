@@ -17,7 +17,7 @@ class LevelTest(unittest.TestCase):
       },
     }
 
-  def test_generates_(self):
+  def test_initializes_without_tiles(self):
     level = Level(self.config)
     self.assertEqual([], level.tiles)
 
