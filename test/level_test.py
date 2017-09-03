@@ -7,26 +7,13 @@ from lib.level import *
 
 class LevelTest(unittest.TestCase):
 
-  def setUp(self):
-    self.config = {
-      'width': 40,
-      'height': 20,
-      'rooms': {
-        'min_width': 3, 'min_height': 3, 'max_width': 11, 'max_height': 5,
-        'generation_attempts': 10
-      },
-    }
-    self.level = Level(self.config)
-
-  def test_initializes_without_tiles(self):
-    self.assertEqual([], self.level.tiles)
-
-  def test_create_empty_tiles(self):
-    self.level.create_empty_tiles()
-    self.assertEqual(len(self.level.tiles), self.config['width'])
-    self.assertEqual(len(self.level.tiles[0]), self.config['height'])
-
-class GeneratorTest(unittest.TestCase):
+  def floor_tile_count(self):
+    floor_tiles = []
+    for column in range(0, self.config['width']):
+      for row in range(0, self.config['height']):
+        if self.level.tiles[column][row].type == "floor":
+          floor_tiles.append(True)
+    return len(floor_tiles)
 
   def setUp(self):
     self.config = {
@@ -43,13 +30,15 @@ class GeneratorTest(unittest.TestCase):
     self.generator.config = self.config
     self.generator.level = self.level
 
-  def floor_tile_count(self):
-    floor_tiles = []
-    for column in range(0, self.config['width']):
-      for row in range(0, self.config['height']):
-        if self.level.tiles[column][row].type == "floor":
-          floor_tiles.append(True)
-    return len(floor_tiles)
+  def test_level_initializes_without_tiles(self):
+    level = Level(self.config)
+    self.assertEqual([], level.tiles)
+
+  def test_level_creates_empty_tiles(self):
+    level = Level(self.config)
+    level.create_empty_tiles()
+    self.assertEqual(len(level.tiles), self.config['width'])
+    self.assertEqual(len(level.tiles[0]), self.config['height'])
 
   def test_generator_generates_rooms(self):
     self.assertEqual(0, len(self.generator.rooms))
@@ -85,7 +74,6 @@ class GeneratorTest(unittest.TestCase):
     level = Level(self.config)
     level.width = 13
     self.assertTrue(room.within_level(level))
-
 
 
 if __name__ == '__main__':
