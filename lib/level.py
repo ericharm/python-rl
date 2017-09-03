@@ -11,8 +11,8 @@ class Level:
 
   def generate(self, config):
     self.create_empty_tiles()
-    generator = Generator(self, config)
-    generator.generate_rooms()
+    generator = Generator()
+    generator.generate_level(self, config)
 
   def create_empty_tiles(self):
     for x in range(0,self.width):
@@ -20,6 +20,7 @@ class Level:
       for y in range(0,self.height):
         self.tiles[x].append(None)
         tile = Tile(x,y)
+        tile.set_type('empty')
         self.tiles[x][y] = tile
 
   def draw(self, screen):
@@ -30,41 +31,37 @@ class Level:
 
 class Generator:
 
-  def __init__(self, level, config):
-    self.level = level
-    self.config = config
+  def __init__(self):
     self.rooms = []
 
-  def generate_rooms(self):
-    rooms = self.config['rooms']
-    for attempt in range(0, rooms['generation_attempts']):
-      odd_x = 1 + (random.randint(0, self.config['width']) * 2) / 2 + 1
-      odd_y = 1 + (random.randint(0, self.config['height']) * 2) / 2 + 1
-
-      rooms = self.config['rooms']
-      odd_width = (random.randint(rooms['min_width'],
-                                  rooms['max_width']) * 2) / 2 + 1
-      odd_height = (random.randint(rooms['min_height'],
-                                   rooms['max_height']) * 2) / 2 + 1
-
-      room = Room(odd_x, odd_y, odd_width, odd_height)
-      self.add_room_if_isolated(room)
+  def generate_level(self, level, config):
+    self.level = level
+    self.config = config
+    self.generate_rooms()
     self.insert_rooms_into_level()
 
-  def add_room_if_isolated(self, new_room):
-      colliding_rooms = list(
-          filter(lambda room: room.collides_with(new_room), self.rooms)
-      )
-      if (len(colliding_rooms) == 0):
-        self.rooms.append(new_room)
+  def generate_rooms(self):
+    room_config = self.config['rooms']
+    for attempt in range(0, room_config['generation_attempts']):
+      room = self.generate_odd_sized_room(room_config)
+      if (room.isolated_from_rooms(self.rooms) and room.within_level(self.level)):
+        self.rooms.append(room)
+
+  def generate_odd_sized_room(self, room_config):
+      odd_x = 1 + (random.randint(0, self.config['width']) * 2) / 2 + 1
+      odd_y = 1 + (random.randint(0, self.config['height']) * 2) / 2 + 1
+      odd_width = (random.randint(room_config['min_width'],
+                                  room_config['max_width']) * 2) / 2 + 1
+      odd_height = (random.randint(room_config['min_height'],
+                                   room_config['max_height']) * 2) / 2 + 1
+      return Room(odd_x, odd_y, odd_width, odd_height)
 
   def insert_rooms_into_level(self):
     level = self.level
     for room in self.rooms:
-      for column in range(room.x, room.x + room.width):
-        for row in range(room.y, room.y + room.height):
-          if (column < level.width and row < level.height):
-            level.tiles[column][row].set_type("floor")
+      for column in range (room.x, room.x + room.width):
+        for row in range (room.y, room.y + room.height):
+          level.tiles[column][row].set_type('floor')
 
 
 class Room:
@@ -75,11 +72,21 @@ class Room:
     self.width = width
     self.height = height
 
-  def collides_with(self, room):
+  def collides_with_room(self, room):
     if (self.x > room.x + room.width or self.y > room.y + room.height):
       return False
     elif (self.x + self.width < room.x or self.y + self.height < room.y):
       return False
     else:
       return True
+
+  def isolated_from_rooms(self, rooms):
+      colliding_rooms = list(
+          filter(lambda room: self.collides_with_room(room), rooms)
+      )
+      return (len(colliding_rooms) == 0)
+
+  def within_level(self, level):
+    return (self.x + self.width < level.width and
+        self.y + self.height < level.height)
 
