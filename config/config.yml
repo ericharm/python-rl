@@ -1,14 +1,12 @@
 level:
-  width: 60
-  height: 15
-
-map:
-  target:
-    x: 50
-    y: 18
+  width: 80
+  height: 30
   rooms:
-    max_width: 10
-    max_height: 5
+    min_width: 3
+    min_height: 3
+    max_width: 15
+    max_height: 7
+    generation_attempts: 300
 
 hero:
   start:

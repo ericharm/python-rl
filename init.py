@@ -8,7 +8,6 @@ with open("config/config.yml", 'r') as stream:
   except yaml.YAMLError as exc:
     print(exc)
 
-
 def main(stdscr):
   game = Game(config)
   game.run(stdscr)
