@@ -53,6 +53,10 @@ class LevelTest(unittest.TestCase):
     self.generator.insert_rooms_into_level()
     self.assertGreater(self.floor_tile_count(), 0)
 
+  def test_generator_gets_odd_numbers(self):
+    number = self.generator.odd_number(1,100)
+    self.assertFalse(number % 2 == 0)
+
   def test_room_does_not_collide_with_isolated_room(self):
     room_a = Room(1, 1, 2, 2)
     room_b = Room(4, 4, 2, 2)

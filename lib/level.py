@@ -48,13 +48,18 @@ class Generator:
         self.rooms.append(room)
 
   def generate_odd_sized_room(self, room_config):
-      odd_x = 1 + (random.randint(0, self.config['width']) * 2) / 2 + 1
-      odd_y = 1 + (random.randint(0, self.config['height']) * 2) / 2 + 1
-      odd_width = (random.randint(room_config['min_width'],
-                                  room_config['max_width']) * 2) / 2 + 1
-      odd_height = (random.randint(room_config['min_height'],
-                                   room_config['max_height']) * 2) / 2 + 1
-      return Room(odd_x, odd_y, odd_width, odd_height)
+    x = self.odd_number(0, self.config['width'])
+    y = self.odd_number(0, self.config['height'])
+    wd = self.odd_number(room_config['min_width'], room_config['max_width'])
+    ht = self.odd_number(room_config['min_height'], room_config['max_height'])
+    return Room(x, y, wd, ht)
+
+  def odd_number(self, min_, max_):
+    number = (random.randint(min_, max_))
+    if (number % 2 == 0):
+      return number + 1
+    else:
+      return number
 
   def insert_rooms_into_level(self):
     level = self.level
