@@ -102,6 +102,8 @@ class Generator:
           current_tile = neighbor
           tree.append(current_tile)
         else:
+          if current_tile.type == "empty":
+            current_tile.type = "corridor"
           current_tile = tree.pop()
 
   def odd_number(self, min_, max_):
