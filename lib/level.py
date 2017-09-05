@@ -27,7 +27,7 @@ class Level:
 
   def insert_rooms(self, rooms):
     for room in rooms:
-      self.insert_walls(room)
+      # self.insert_walls(room)
       for column in range (room.x, room.x + room.width):
         for row in range (room.y, room.y + room.height):
           self.tiles[column][row].set_type('floor')
@@ -80,30 +80,30 @@ class Generator:
     return Room(x, y, wd, ht)
 
   def generate_corridors(self): # might not need test
-    tiles = self.level.get_odd_empty_tiles() # get back to this
+    tiles = self.level.get_odd_empty_tiles()
     current_tile = tiles[0]
     tree = [current_tile]
 
-    neighbors = current_tile.get_neighbors(tiles)
-    while len(neighbors) > 0:
-      neighbor = neighbors[random.randint(0, len(neighbors)) - 1]
-      current_tile.set_type("corridor")
-
-      target_x = neighbor.location['x']
-      target_y = neighbor.location['y']
-      self.level.tiles[target_x][target_y].set_type("corridor")
-
-      direction = neighbor.direction_from(current_tile)
-      between_x = direction[0] + target_x
-      between_y = direction[1] + target_y
-      self.level.tiles[between_x][between_y].set_type("corridor")
-
-      current_tile = neighbor
-      tree.append(current_tile)
+    while len(tree) > 0:
       neighbors = current_tile.get_neighbors(tiles)
-    # once neighbors equals zero,
-    # climb down the tree
 
+      if len(neighbors) > 0:
+        neighbor = neighbors[random.randint(0, len(neighbors)) - 1]
+        current_tile.set_type("corridor")
+
+        target_x = neighbor.location['x']
+        target_y = neighbor.location['y']
+        self.level.tiles[target_x][target_y].set_type("corridor")
+
+        direction = neighbor.direction_from(current_tile)
+        between_x = direction[0] + target_x
+        between_y = direction[1] + target_y
+        self.level.tiles[between_x][between_y].set_type("corridor")
+
+        current_tile = neighbor
+        tree.append(current_tile)
+      else:
+        current_tile = tree.pop()
 
   def odd_number(self, min_, max_):
     number = (random.randint(min_, max_))
