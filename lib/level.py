@@ -32,7 +32,7 @@ class Level:
         for row in range (room.y, room.y + room.height):
           self.tiles[column][row].set_type('floor')
 
-  def insert_walls(self, room): # needs test
+  def insert_walls(self, room): #
     x = room.x - 1
     y = room.y - 1
     width = room.width + 2
@@ -41,7 +41,7 @@ class Level:
       for row in range (y, y + height):
         self.tiles[column][row].set_type('wall')
 
-  def get_odd_empty_tiles(self): # needs test
+  def get_odd_empty_tiles(self): #
     odd_empty_tiles = []
     for column in range(0, self.width):
       for row in range(0, self.height):
@@ -79,31 +79,30 @@ class Generator:
     ht = self.odd_number(room_config['min_height'], room_config['max_height'])
     return Room(x, y, wd, ht)
 
-  def generate_corridors(self): # might not need test
-    tiles = self.level.get_odd_empty_tiles()
-    current_tile = tiles[0]
-    tree = [current_tile]
+  def generate_corridors(self): # break this up
+    while len(self.level.get_odd_empty_tiles()) > 0:
+      tiles = self.level.get_odd_empty_tiles()
+      current_tile = tiles[0]
+      tree = [current_tile]
+      while len(tree) > 0:
+        neighbors = current_tile.get_neighbors(tiles)
+        if len(neighbors) > 0:
+          neighbor = neighbors[random.randint(0, len(neighbors)) - 1]
+          current_tile.set_type("corridor")
 
-    while len(tree) > 0:
-      neighbors = current_tile.get_neighbors(tiles)
+          target_x = neighbor.location['x']
+          target_y = neighbor.location['y']
+          self.level.tiles[target_x][target_y].set_type("corridor")
 
-      if len(neighbors) > 0:
-        neighbor = neighbors[random.randint(0, len(neighbors)) - 1]
-        current_tile.set_type("corridor")
+          direction = neighbor.direction_from(current_tile)
+          between_x = direction[0] + target_x
+          between_y = direction[1] + target_y
+          self.level.tiles[between_x][between_y].set_type("corridor")
 
-        target_x = neighbor.location['x']
-        target_y = neighbor.location['y']
-        self.level.tiles[target_x][target_y].set_type("corridor")
-
-        direction = neighbor.direction_from(current_tile)
-        between_x = direction[0] + target_x
-        between_y = direction[1] + target_y
-        self.level.tiles[between_x][between_y].set_type("corridor")
-
-        current_tile = neighbor
-        tree.append(current_tile)
-      else:
-        current_tile = tree.pop()
+          current_tile = neighbor
+          tree.append(current_tile)
+        else:
+          current_tile = tree.pop()
 
   def odd_number(self, min_, max_):
     number = (random.randint(min_, max_))
