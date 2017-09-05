@@ -41,6 +41,14 @@ class Tile:
   def empty(self): # needs test
     return self.type == "empty"
 
+  def get_neighbors(self, tiles):
+    tiles_at_distance_two = list(filter(lambda tile: tile.at_distance(2, self), tiles))
+    empty_at_distance_two = list(filter(lambda tile: tile.empty(), tiles_at_distance_two))
+    return empty_at_distance_two
+
+  # combine at_distance and direction_from
+  # we can get the exact x and y difference and infer
+  # straight lines and directions later
   def at_distance(self, n, target): # needs test
     is_n_north = (target.location['x'] is self.location['x'] and
                    target.location['y'] is self.location['y'] - n)

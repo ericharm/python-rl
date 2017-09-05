@@ -48,5 +48,5 @@ class Game:
     init_pair(1, COLOR_MAGENTA, COLOR_BLACK)
 
   def is_floor(self, x, y):
-        return self.level.tiles[x][y].type == "floor"
+        return self.level.tiles[x][y].type == "floor" or self.level.tiles[x][y].type == "corridor"
 

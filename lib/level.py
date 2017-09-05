@@ -80,28 +80,30 @@ class Generator:
     return Room(x, y, wd, ht)
 
   def generate_corridors(self): # might not need test
-    # gonna do this until level.get_odd_tiles is empty
-    # for attempt in range(0, 100):
-    while (len(self.level.get_odd_empty_tiles()) > 2):
-      tiles = self.level.get_odd_empty_tiles()
-      # random_tile = tiles[random.randint(0, len(tiles))]
-      random_tile = tiles[0]
-      tiles_at_distance_two = list(filter(lambda tile: tile.at_distance(2, random_tile), tiles))
-      if len(tiles_at_distance_two) == 0:
-        random_tile.set_type("sempty")
-      else:
-        tile_at_distance_2 = tiles_at_distance_two[random.randint(0, len(tiles_at_distance_two)) - 1]
-        # random tile becomes corridor
-        random_tile.set_type("corridor")
-        # random tile at distance two becomes corridor
-        target_x = tile_at_distance_2.location['x']
-        target_y = tile_at_distance_2.location['y']
-        self.level.tiles[target_x][target_y].set_type("corridor")
-        # tile between becomes corridor
-        direction = tile_at_distance_2.direction_from(random_tile)
-        between_x = direction[0] + target_x
-        between_y = direction[1] + target_y
-        self.level.tiles[between_x][between_y].set_type("corridor")
+    tiles = self.level.get_odd_empty_tiles() # get back to this
+    current_tile = tiles[0]
+    tree = [current_tile]
+
+    neighbors = current_tile.get_neighbors(tiles)
+    while len(neighbors) > 0:
+      neighbor = neighbors[random.randint(0, len(neighbors)) - 1]
+      current_tile.set_type("corridor")
+
+      target_x = neighbor.location['x']
+      target_y = neighbor.location['y']
+      self.level.tiles[target_x][target_y].set_type("corridor")
+
+      direction = neighbor.direction_from(current_tile)
+      between_x = direction[0] + target_x
+      between_y = direction[1] + target_y
+      self.level.tiles[between_x][between_y].set_type("corridor")
+
+      current_tile = neighbor
+      tree.append(current_tile)
+      neighbors = current_tile.get_neighbors(tiles)
+    # once neighbors equals zero,
+    # climb down the tree
+
 
   def odd_number(self, min_, max_):
     number = (random.randint(min_, max_))
