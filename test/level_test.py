@@ -11,7 +11,7 @@ class LevelTest(unittest.TestCase):
     floor_tiles = []
     for column in range(0, self.config['width']):
       for row in range(0, self.config['height']):
-        if self.level.tiles[column][row].type == "floor":
+        if self.level.tiles[column][row].type is "floor":
           floor_tiles.append(True)
     return len(floor_tiles)
 
@@ -55,7 +55,7 @@ class LevelTest(unittest.TestCase):
 
   def test_generator_gets_odd_numbers(self):
     number = self.generator.odd_number(1,100)
-    self.assertFalse(number % 2 == 0)
+    self.assertFalse(number % 2 is 0)
 
   def test_room_does_not_collide_with_isolated_room(self):
     room_a = Room(1, 1, 2, 2)
@@ -80,6 +80,6 @@ class LevelTest(unittest.TestCase):
     self.assertTrue(room.within_level(level))
 
 
-if __name__ == '__main__':
+if __name__ is '__main__':
   unittest.main()
 

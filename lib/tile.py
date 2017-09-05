@@ -8,15 +8,15 @@ class Tile:
     self.in_periphery = False
 
   def char(self):
-    if self.type == "floor":
+    if self.type is "floor":
       return "."
-    elif self.type == "wall":
+    elif self.type is "wall":
       return "#"
-    elif self.type == "empty":
+    elif self.type is "empty":
       return " "
-    elif self.type == "sempty":
+    elif self.type is "sempty":
       return "x"
-    elif self.type == "corridor":
+    elif self.type is "corridor":
       return "="
 
   def color(self):
@@ -39,7 +39,7 @@ class Tile:
     return self.location['x'] % 2 != 0 and self.location['y'] % 2 != 0
 
   def empty(self): #
-    return self.type == "empty"
+    return self.type is "empty"
 
   def get_neighbors(self, tiles): #
     tiles_at_distance_two = list(filter(lambda tile: tile.at_distance(2, self), tiles))
@@ -47,26 +47,21 @@ class Tile:
     return empty_at_distance_two
 
   def at_distance(self, n, target): #
-    is_n_north = (target.location['x'] is self.location['x'] and
-                  target.location['y'] is self.location['y'] - n)
-    is_n_south = (target.location['x'] is self.location['x'] and
-                  target.location['y'] is self.location['y'] + n)
-    is_n_west = (target.location['x'] is self.location['x'] - n and
-                 target.location['y'] is self.location['y'])
-    is_n_east = (target.location['x'] is self.location['x'] + n and
-                 target.location['y'] is self.location['y'])
-    return (is_n_north or is_n_south or is_n_west or is_n_east)
+    if (target.location['x'] is self.location['x']):
+      return (target.location['y'] is self.location['y'] - n or
+              target.location['y'] is self.location['y'] + n)
+    elif (target.location['y'] is self.location['y']):
+      return (target.location['x'] is self.location['x'] - n or
+              target.location['x'] is self.location['x'] + n)
+    else:
+      return False
 
   def direction_from(self, tile): #
     x = 0
     y = 0
-    if self.location['x'] < tile.location['x']:
-      x = 1
-    if self.location['x'] > tile.location['x']:
-      x = -1
-    if self.location['y'] < tile.location['y']:
-      y = 1
-    if self.location['y'] > tile.location['y']:
-      y = -1
+    x = 1  if self.location['x'] < tile.location['x'] else x
+    x = -1 if self.location['x'] > tile.location['x'] else x
+    y = 1  if self.location['y'] < tile.location['y'] else y
+    y = -1 if self.location['y'] > tile.location['y'] else y
     return (x, y)
 

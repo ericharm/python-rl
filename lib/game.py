@@ -37,7 +37,7 @@ class Game:
         self.hero.y -= 1
       elif (key_in == "KEY_DOWN" and self.is_floor(x, y + 1)):
         self.hero.y += 1
-      elif (key_in == "q"):
+      elif (key_in is "q"):
         return False
 
   def update(self):
@@ -48,5 +48,5 @@ class Game:
     init_pair(1, COLOR_MAGENTA, COLOR_BLACK)
 
   def is_floor(self, x, y):
-        return self.level.tiles[x][y].type == "floor" or self.level.tiles[x][y].type == "corridor"
+        return self.level.tiles[x][y].type is "floor" or self.level.tiles[x][y].type is "corridor"
 

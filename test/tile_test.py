@@ -25,6 +25,6 @@ class TileTest(unittest.TestCase):
   def test_color(self):
     self.assertEqual("BLACK", self.tile.color())
 
-if __name__ == '__main__':
+if __name__ is '__main__':
   unittest.main()
 
