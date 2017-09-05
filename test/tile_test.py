@@ -20,7 +20,7 @@ class TileTest(unittest.TestCase):
 
   def test_char(self):
     self.tile.type = "wall"
-    self.assertEqual("=", self.tile.char())
+    self.assertEqual("#", self.tile.char())
 
   def test_color(self):
     self.assertEqual("BLACK", self.tile.color())

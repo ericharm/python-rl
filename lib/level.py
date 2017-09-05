@@ -14,7 +14,6 @@ class Level:
     generator = Generator()
     generator.generate_level(self, config)
     self.insert_rooms(generator.rooms)
-    generator.generate_corridors()
 
   def create_empty_tiles(self):
     for x in range(0,self.width):
@@ -64,6 +63,7 @@ class Generator:
     self.level = level
     self.config = config
     self.generate_rooms()
+    self.generate_corridors()
 
   def generate_rooms(self):
     room_config = self.config['rooms']
@@ -86,6 +86,7 @@ class Generator:
       self.generate_corridor(tiles, tree, tiles[0])
 
   def generate_corridor(self, tiles, tree, source_tile): #
+    # corrider = Corridor()
     current_tile = source_tile
     while len(tree) > 0:
       neighbors = current_tile.get_neighbors(tiles)
@@ -98,6 +99,7 @@ class Generator:
         if current_tile.type is "empty":
           current_tile.type = "corridor"
         current_tile = tree.pop()
+        # corridor.tiles.append(current_tile)
 
   def connect_neighbors_as_corridor(self, source_tile, target_tile): #
     source_tile.set_type("corridor")
