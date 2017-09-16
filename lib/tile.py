@@ -69,3 +69,11 @@ class Tile:
     y = 1 if self.location['y'] > tile.location['y'] else y
     return (x, y)
 
+  def dead_end(self, adjacents):
+    empties = list(filter(lambda tile: tile.empty(), adjacents))
+    walkables = list(filter(lambda tile: tile.walkable(), adjacents))
+
+    return (len(empties) is (len(adjacents) - 1) and len(walkables) is 1
+            and self.type is "corridor")
+
+

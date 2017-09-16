@@ -62,6 +62,29 @@ class TileTest(unittest.TestCase):
     self.assertEqual(west_tile.direction_from(self.tile), (-1,0))
     self.assertEqual(north_east_tile.direction_from(self.tile), (1,-1))
 
+  def test_dead_end(self):
+    tile = Tile(2,2)
+    west = Tile(1,2)
+    east = Tile(3,2)
+    north = Tile(2,1)
+    south = Tile(2,3)
+    tile.set_type("corridor")
+    south.set_type("corridor")
+    adjacents = [west, east, north, south]
+    self.assertTrue(tile.dead_end(adjacents))
+
+  def test_not_dead_end(self):
+    tile = Tile(2,2)
+    west = Tile(1,2)
+    east = Tile(3,2)
+    north = Tile(2,1)
+    south = Tile(2,3)
+    tile.set_type("corridor")
+    south.set_type("corridor")
+    north.set_type("corridor")
+    adjacents = [west, east, north, south]
+    self.assertFalse(tile.dead_end(adjacents))
+
 if __name__ is '__main__':
   unittest.main()
 

@@ -15,6 +15,8 @@ class Level:
     generator.generate_level(self, config)
     self.insert_rooms(generator.rooms)
     self.add_stairs_down()
+    for times in range(0,20):
+      self.remove_dead_ends()
 
   def create_empty_tiles(self):
     for x in range(0,self.width):
@@ -66,6 +68,27 @@ class Level:
           odd_empty_tiles.append(self.tiles[column][row])
     return odd_empty_tiles
 
+  def get_adjacent_tiles(self, x, y): #
+    adjacents = []
+    if (x > 1):
+      adjacents.append(self.tiles[x-1][y])
+    if (x < self.width - 1):
+      adjacents.append(self.tiles[x+1][y])
+    if (y > 1):
+      adjacents.append(self.tiles[x][y-1])
+    if (y < self.height - 1):
+      adjacents.append(self.tiles[x][y+1])
+    return adjacents
+
+  # corridor class ?
+  def remove_dead_ends(self):
+    for column in range(0, self.width):
+      for row in range(0, self.height):
+        tile = self.tiles[column][row]
+        adjacents = self.get_adjacent_tiles(column, row)
+        if (tile.type is "corridor" and tile.dead_end(adjacents)):
+          tile.set_type("empty");
+
   def draw(self, screen):
     for x in range(0,self.width):
       for y in range(0,self.height):
@@ -103,7 +126,8 @@ class Generator:
       tree = [tiles[0]] # could start at a random instead
       self.generate_corridor(tiles, tree, tiles[0])
 
-  def generate_corridor(self, tiles, tree, source_tile): #
+  # corridor class
+  def generate_corridor(self, tiles, tree, source_tile):
     # build a corridor using recursive maze generation algorithm
     # corridor = Corridor()
     current_tile = source_tile
@@ -120,6 +144,8 @@ class Generator:
         current_tile = tree.pop()
         # corridor.tiles.append(current_tile)
 
+
+  # corridor class
   def connect_neighbors_as_corridor(self, source_tile, target_tile):
     source_tile.set_type("corridor")
     target_x = target_tile.location['x']
