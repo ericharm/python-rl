@@ -45,6 +45,7 @@ class Level:
   def add_stairs_down(self): #
     tile = self.get_random_floor_tile()
     tile.set_type('stairs_down')
+    return tile
 
   def get_random_floor_tile(self): #
     random_tile = self.get_random_tile()
@@ -52,7 +53,7 @@ class Level:
       random_tile = self.get_random_tile()
     return random_tile
 
-  def get_random_tile(self): #
+  def get_random_tile(self):
     x = random.randint(0, self.width - 1)
     y = random.randint(0, self.height - 1)
     return self.tiles[x][y]
@@ -124,8 +125,8 @@ class Generator:
     target_y = target_tile.location['y']
     self.level.tiles[target_x][target_y].set_type("corridor")
     direction = target_tile.direction_from(source_tile)
-    between_x = direction[0] + target_x
-    between_y = direction[1] + target_y
+    between_x = direction[0] - target_x
+    between_y = direction[1] - target_y
     self.level.tiles[between_x][between_y].set_type("corridor")
 
   def odd_number(self, min_, max_):

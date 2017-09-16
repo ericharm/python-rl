@@ -28,7 +28,6 @@ class TileTest(unittest.TestCase):
   def test_empty(self):
     self.assertTrue(self.tile.empty());
     self.tile.set_type("wall")
-    print self.tile.empty
     self.assertFalse(self.tile.empty());
 
   def test_walkable(self):
@@ -36,6 +35,32 @@ class TileTest(unittest.TestCase):
     self.assertTrue(self.tile.walkable())
     self.tile.set_type("wall")
     self.assertFalse(self.tile.walkable())
+
+  def test_odd(self):
+    even_tile = Tile(2,2)
+    odd_tile = Tile(3,3)
+    mixed_tile = Tile(2,3)
+    self.assertFalse(even_tile.odd())
+    self.assertTrue(odd_tile.odd())
+    self.assertFalse(mixed_tile.odd())
+
+  def test_at_distance(self):
+    horizontally_aligned_tile = Tile(10, 3)
+    vertically_aligned_tile = Tile(2, 10)
+    diagonally_aligned_tile = Tile(3, 4)
+    self.assertFalse(self.tile.at_distance(7, horizontally_aligned_tile))
+    self.assertTrue(self.tile.at_distance(8, horizontally_aligned_tile))
+    self.assertTrue(self.tile.at_distance(7,vertically_aligned_tile))
+    self.assertFalse(self.tile.at_distance(8, vertically_aligned_tile))
+    self.assertFalse(self.tile.at_distance(1, diagonally_aligned_tile))
+
+  def test_direction_from(self):
+    south_east_tile = Tile(5,5)
+    west_tile = Tile(1,3)
+    north_east_tile = Tile(5,2)
+    self.assertEqual(south_east_tile.direction_from(self.tile), (1,1))
+    self.assertEqual(west_tile.direction_from(self.tile), (-1,0))
+    self.assertEqual(north_east_tile.direction_from(self.tile), (1,-1))
 
 if __name__ is '__main__':
   unittest.main()
