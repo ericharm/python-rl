@@ -14,6 +14,7 @@ class Level:
     generator = Generator()
     generator.generate_level(self, config)
     self.insert_rooms(generator.rooms)
+    self.add_stairs_down()
 
   def create_empty_tiles(self):
     for x in range(0,self.width):
@@ -26,6 +27,7 @@ class Level:
 
   def insert_rooms(self, rooms):
     for room in rooms:
+      # gonna want to add this back in when upgrading level gen
       # self.insert_walls(room)
       for column in range (room.x, room.x + room.width):
         for row in range (room.y, room.y + room.height):
@@ -39,6 +41,21 @@ class Level:
     for column in range (x, x + width):
       for row in range (y, y + height):
         self.tiles[column][row].set_type('wall')
+
+  def add_stairs_down(self): #
+    tile = self.get_random_floor_tile()
+    tile.set_type('stairs_down')
+
+  def get_random_floor_tile(self): #
+    random_tile = self.get_random_tile()
+    while random_tile.type != 'floor':
+      random_tile = self.get_random_tile()
+    return random_tile
+
+  def get_random_tile(self): #
+    x = random.randint(0, self.width - 1)
+    y = random.randint(0, self.height - 1)
+    return self.tiles[x][y]
 
   def get_odd_empty_tiles(self):
     odd_empty_tiles = []

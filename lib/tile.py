@@ -14,10 +14,10 @@ class Tile:
       return "#"
     elif self.type is "empty":
       return " "
-    elif self.type is "sempty":
-      return "x"
     elif self.type is "corridor":
-      return "="
+      return "#"
+    elif self.type is "stairs_down":
+      return ">"
 
   def color(self):
     if self.visible:
@@ -31,6 +31,9 @@ class Tile:
 
   def set_type(self, new_type):
     self.type = new_type
+
+  def walkable(self): #
+    return self.type is "floor" or self.type is "corridor" or self.type is "stairs_down"
 
   def draw(self, screen):
      screen.addstr(self.location['y'], self.location['x'], self.char())

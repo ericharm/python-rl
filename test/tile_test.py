@@ -25,6 +25,18 @@ class TileTest(unittest.TestCase):
   def test_color(self):
     self.assertEqual("BLACK", self.tile.color())
 
+  def test_empty(self):
+    self.assertTrue(self.tile.empty());
+    self.tile.set_type("wall")
+    print self.tile.empty
+    self.assertFalse(self.tile.empty());
+
+  def test_walkable(self):
+    self.tile.set_type("floor")
+    self.assertTrue(self.tile.walkable())
+    self.tile.set_type("wall")
+    self.assertFalse(self.tile.walkable())
+
 if __name__ is '__main__':
   unittest.main()
 
