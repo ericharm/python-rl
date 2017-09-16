@@ -42,12 +42,12 @@ class Level:
       for row in range (y, y + height):
         self.tiles[column][row].set_type('wall')
 
-  def add_stairs_down(self): #
+  def add_stairs_down(self):
     tile = self.get_random_floor_tile()
     tile.set_type('stairs_down')
     return tile
 
-  def get_random_floor_tile(self): #
+  def get_random_floor_tile(self):
     random_tile = self.get_random_tile()
     while random_tile.type != 'floor':
       random_tile = self.get_random_tile()
@@ -104,7 +104,8 @@ class Generator:
       self.generate_corridor(tiles, tree, tiles[0])
 
   def generate_corridor(self, tiles, tree, source_tile): #
-    # corrider = Corridor()
+    # build a corridor using recursive maze generation algorithm
+    # corridor = Corridor()
     current_tile = source_tile
     while len(tree) > 0:
       neighbors = current_tile.get_neighbors(tiles)
@@ -119,14 +120,14 @@ class Generator:
         current_tile = tree.pop()
         # corridor.tiles.append(current_tile)
 
-  def connect_neighbors_as_corridor(self, source_tile, target_tile): #
+  def connect_neighbors_as_corridor(self, source_tile, target_tile):
     source_tile.set_type("corridor")
     target_x = target_tile.location['x']
     target_y = target_tile.location['y']
     self.level.tiles[target_x][target_y].set_type("corridor")
     direction = target_tile.direction_from(source_tile)
-    between_x = direction[0] - target_x
-    between_y = direction[1] - target_y
+    between_x = direction[0] + source_tile.location['x']
+    between_y = direction[1] + source_tile.location['y']
     self.level.tiles[between_x][between_y].set_type("corridor")
 
   def odd_number(self, min_, max_):
@@ -162,4 +163,5 @@ class Room:
   def within_level(self, level):
     return (self.x + self.width < level.width and
         self.y + self.height < level.height)
+
 

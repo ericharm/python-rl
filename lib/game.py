@@ -55,7 +55,6 @@ class Game:
     init_pair(4, COLOR_BLUE, COLOR_BLACK)
     init_pair(5, COLOR_MAGENTA, COLOR_BLACK)
 
-### maybe these belong in game class and above belongs in application
 
   def generate_new_level(self):
     self.level = Level(self.config['level'])

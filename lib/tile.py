@@ -33,6 +33,7 @@ class Tile:
     self.type = new_type
 
   def walkable(self):
+    # change this to hold an array of walkable types and search that array
     return self.type is "floor" or self.type is "corridor" or self.type is "stairs_down"
 
   def draw(self, screen):

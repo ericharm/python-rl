@@ -79,6 +79,22 @@ class LevelTest(unittest.TestCase):
     level.width = 13
     self.assertTrue(room.within_level(level))
 
+  def test_get_random_floor_tile(self):
+    self.generator.generate_rooms()
+    self.level.insert_rooms(self.generator.rooms)
+    tile = self.level.get_random_floor_tile()
+    self.assertEqual(tile.type, "floor")
+
+  def test_connect_neighbors_as_corridor(self):
+    source_tile = self.level.tiles[1][1]
+    target_tile = self.level.tiles[3][1]
+    inbetween_tile = self.level.tiles[2][1]
+    self.generator.connect_neighbors_as_corridor(source_tile, target_tile)
+    self.assertEqual(source_tile.type, "corridor");
+    self.assertEqual(target_tile.type, "corridor");
+    self.assertEqual(inbetween_tile.type, "corridor");
+
+
 
 if __name__ is '__main__':
   unittest.main()
