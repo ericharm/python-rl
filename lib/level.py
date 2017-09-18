@@ -4,19 +4,29 @@ import random
 class Level:
 
   def __init__(self, config):
+    self.config = config
     self.tiles = []
     self.width = config['width']
     self.height = config['height']
     self.room_settings = config['rooms']
 
-  def generate(self, config):
+  def generate(self):
     self.create_empty_tiles()
     generator = Generator()
-    generator.generate_level(self, config)
+    generator.generate_level(self, self.config)
     self.insert_rooms(generator.rooms)
-    self.add_stairs_down()
-    for times in range(0,20):
+    for times in range(0, 20):
       self.remove_dead_ends()
+    return self
+
+  def with_stairs_up(self, hero): #
+    self.tiles[hero.x][hero.y].set_type("stairs_up")
+    return self
+
+  def with_stairs_down(self): #
+    tile = self.get_random_floor_tile()
+    tile.set_type('stairs_down')
+    return self
 
   def create_empty_tiles(self):
     for x in range(0,self.width):
@@ -24,13 +34,10 @@ class Level:
       for y in range(0,self.height):
         self.tiles[x].append(None)
         tile = Tile(x,y)
-        tile.set_type('empty')
         self.tiles[x][y] = tile
 
   def insert_rooms(self, rooms):
     for room in rooms:
-      # gonna want to add this back in when upgrading level gen
-      # self.insert_walls(room)
       for column in range (room.x, room.x + room.width):
         for row in range (room.y, room.y + room.height):
           self.tiles[column][row].set_type('floor')
@@ -43,11 +50,6 @@ class Level:
     for column in range (x, x + width):
       for row in range (y, y + height):
         self.tiles[column][row].set_type('wall')
-
-  def add_stairs_down(self):
-    tile = self.get_random_floor_tile()
-    tile.set_type('stairs_down')
-    return tile
 
   def get_random_floor_tile(self):
     random_tile = self.get_random_tile()
@@ -80,7 +82,6 @@ class Level:
       adjacents.append(self.tiles[x][y+1])
     return adjacents
 
-  # corridor class ?
   def remove_dead_ends(self):
     for column in range(0, self.width):
       for row in range(0, self.height):
@@ -126,10 +127,8 @@ class Generator:
       tree = [tiles[0]] # could start at a random instead
       self.generate_corridor(tiles, tree, tiles[0])
 
-  # corridor class
   def generate_corridor(self, tiles, tree, source_tile):
     # build a corridor using recursive maze generation algorithm
-    # corridor = Corridor()
     current_tile = source_tile
     while len(tree) > 0:
       neighbors = current_tile.get_neighbors(tiles)
@@ -142,18 +141,15 @@ class Generator:
         if current_tile.type is "empty":
           current_tile.type = "corridor"
         current_tile = tree.pop()
-        # corridor.tiles.append(current_tile)
 
-
-  # corridor class
   def connect_neighbors_as_corridor(self, source_tile, target_tile):
     source_tile.set_type("corridor")
-    target_x = target_tile.location['x']
-    target_y = target_tile.location['y']
+    target_x = target_tile.x
+    target_y = target_tile.y
     self.level.tiles[target_x][target_y].set_type("corridor")
     direction = target_tile.direction_from(source_tile)
-    between_x = direction[0] + source_tile.location['x']
-    between_y = direction[1] + source_tile.location['y']
+    between_x = direction[0] + source_tile.x
+    between_y = direction[1] + source_tile.y
     self.level.tiles[between_x][between_y].set_type("corridor")
 
   def odd_number(self, min_, max_):

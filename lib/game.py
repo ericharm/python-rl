@@ -7,17 +7,13 @@ class Game:
 
   def __init__(self, config):
     self.config = config
-
-    self.levels = []
-    self.level = Level(config['level'])
-    self.level.generate(config['level'])
-    self.levels.append(self.level)
-
-    hero_start = self.config['hero']['start']
-    self.hero = Hero(hero_start['x'], hero_start['y'])
+    self.level = self.generate_first_level()
+    self.current_level = 0
+    self.levels = [self.level]
+    hero_start = self.level.get_random_floor_tile()
+    self.hero = Hero(hero_start.x, hero_start.y)
 
   def run(self, screen):
-    self.init_curses()
     playing = True
     while (playing != False):
       self.draw(screen)
@@ -25,7 +21,6 @@ class Game:
       self.update()
 
   def draw(self, screen):
-    # screen.clear()
     self.level.draw(screen)
     screen.addstr(self.hero.y, self.hero.x, '@', curses.color_pair(5))
 
@@ -42,32 +37,38 @@ class Game:
       elif (key_in == "KEY_DOWN" and self.is_walkable(x, y + 1)):
         self.hero.y += 1
       elif (key_in is ">" and self.level.tiles[x][y].type is "stairs_down"):
-        self.generate_new_level()
+        self.descend_stairs()
+      elif (key_in is "<" and self.level.tiles[x][y].type is "stairs_up"):
+        self.ascend_stairs()
       elif (key_in is "q"):
         return False
 
   def update(self):
+    # this is where we will handle AI and zapgun projectiles
     update = True
 
-  def init_curses(self):
-    curses.curs_set(0)
-    # empty
-    curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_BLACK)
-    # stairs_down
-    curses.init_pair(2, curses.COLOR_GREEN, curses.COLOR_BLACK)
-    # corridor
-    curses.init_pair(3, curses.COLOR_BLUE, curses.COLOR_BLACK)
-    # floor
-    curses.init_pair(4, curses.COLOR_RED, curses.COLOR_BLACK)
-    # hero char
-    curses.init_pair(5, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
 
+  def descend_stairs(self): #
+    self.current_level += 1
+    if len(self.levels) <= self.current_level:
+      level = self.generate_next_level()
+      self.levels.append(level)
+    self.level = self.levels[self.current_level]
 
-  def generate_new_level(self):
-    self.level = Level(self.config['level'])
-    self.level.generate(self.config['level'])
+  def ascend_stairs(self): #
+    self.current_level -= 1
+    self.level = self.levels[self.current_level]
 
-  def is_walkable(self, x, y):
+  def generate_first_level(self): #
+    return Level(self.config['level']).generate().with_stairs_down()
+
+  def generate_next_level(self): #
+    if self.current_level < (self.config['game']['levels'] - 1):
+      return Level(self.config['level']).generate().with_stairs_up(self.hero).with_stairs_down()
+    else:
+      return Level(self.config['level']).generate().with_stairs_up(self.hero)
+
+  def is_walkable(self, x, y): #
     if y >= self.level.height or x >= self.level.width:
       return False
     return self.level.tiles[x][y].walkable()

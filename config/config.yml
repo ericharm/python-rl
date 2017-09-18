@@ -1,3 +1,6 @@
+game:
+  levels: 5
+
 level:
   width: 80
   height: 30
@@ -7,9 +10,6 @@ level:
     max_width: 15
     max_height: 7
     generation_attempts: 300
-
-hero:
-  start:
-    x: 4
-    y: 4
+  corridors:
+    dead_end_removals: 20
 
