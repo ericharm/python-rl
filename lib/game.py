@@ -1,16 +1,18 @@
 from level import Level
 from hero import Hero
-from curses import *
+import curses
 import random
 
 class Game:
 
   def __init__(self, config):
     self.config = config
-    # self.levels = []
+
+    self.levels = []
     self.level = Level(config['level'])
     self.level.generate(config['level'])
-    # self.levels.append(self.level)
+    self.levels.append(self.level)
+
     hero_start = self.config['hero']['start']
     self.hero = Hero(hero_start['x'], hero_start['y'])
 
@@ -25,13 +27,13 @@ class Game:
   def draw(self, screen):
     # screen.clear()
     self.level.draw(screen)
-    screen.addstr(self.hero.y, self.hero.x, '@', color_pair(5))
+    screen.addstr(self.hero.y, self.hero.x, '@', curses.color_pair(5))
 
   def handle_input(self, keyboard):
       key_in = keyboard.getkey()
       x = self.hero.x
       y = self.hero.y
-      if (key_in == "KEY_LEFT" and self.is_walkable(x - 1, y)):
+      if   (key_in == "KEY_LEFT" and self.is_walkable(x - 1, y)):
         self.hero.x -= 1
       elif (key_in == "KEY_RIGHT" and self.is_walkable(x + 1, y)):
         self.hero.x += 1
@@ -48,12 +50,17 @@ class Game:
     update = True
 
   def init_curses(self):
-    curs_set(0)
-    init_pair(1, COLOR_RED, COLOR_BLACK)
-    init_pair(2, COLOR_GREEN, COLOR_BLACK)
-    init_pair(3, COLOR_YELLOW, COLOR_BLACK)
-    init_pair(4, COLOR_BLUE, COLOR_BLACK)
-    init_pair(5, COLOR_MAGENTA, COLOR_BLACK)
+    curses.curs_set(0)
+    # empty
+    curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_BLACK)
+    # stairs_down
+    curses.init_pair(2, curses.COLOR_GREEN, curses.COLOR_BLACK)
+    # corridor
+    curses.init_pair(3, curses.COLOR_BLUE, curses.COLOR_BLACK)
+    # floor
+    curses.init_pair(4, curses.COLOR_RED, curses.COLOR_BLACK)
+    # hero char
+    curses.init_pair(5, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
 
 
   def generate_new_level(self):

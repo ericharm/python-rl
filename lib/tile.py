@@ -1,3 +1,5 @@
+import curses
+
 class Tile:
 
   def __init__(self, x, y):
@@ -11,7 +13,7 @@ class Tile:
     if self.type is "floor":
       return "."
     elif self.type is "wall":
-      return "#"
+      return " "
     elif self.type is "empty":
       return " "
     elif self.type is "corridor":
@@ -20,14 +22,16 @@ class Tile:
       return ">"
 
   def color(self):
-    if self.visible:
-      return "BRIGHT_WHITE"
-    elif self.in_periphery:
-      return "WHITE"
-    elif self.revealed:
-      return "GRAY"
-    else:
-      return "BLACK"
+    if self.type is "floor":
+      return curses.color_pair(4)
+    elif self.type is "wall":
+      return curses.color_pair(5)
+    elif self.type is "empty":
+      return curses.color_pair(1)
+    elif self.type is "corridor":
+      return curses.color_pair(3)
+    elif self.type is "stairs_down":
+      return curses.color_pair(2)
 
   def set_type(self, new_type):
     self.type = new_type
@@ -37,7 +41,7 @@ class Tile:
     return self.type is "floor" or self.type is "corridor" or self.type is "stairs_down"
 
   def draw(self, screen):
-     screen.addstr(self.location['y'], self.location['x'], self.char())
+     screen.addstr(self.location['y'], self.location['x'], self.char(), self.color())
 
   def odd(self):
     return self.location['x'] % 2 != 0 and self.location['y'] % 2 != 0
