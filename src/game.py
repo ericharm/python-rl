@@ -25,6 +25,7 @@ class Game:
     screen.addstr(self.hero.y, self.hero.x, '@', curses.color_pair(5))
 
   def handle_input(self, keyboard):
+      # once this gets long we will implement a Player object
       key_in = keyboard.getkey()
       x = self.hero.x
       y = self.hero.y

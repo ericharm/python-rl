@@ -1,6 +1,6 @@
 import curses
 import yaml
-from lib.game import Game
+from src.game import Game
 
 with open("config/config.yml", 'r') as stream:
   try:

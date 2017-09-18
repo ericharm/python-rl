@@ -3,7 +3,7 @@ import sys
 import unittest
 sys.path.insert(0,os.path.abspath(__file__+"/../.."))
 
-from lib.level import *
+from src.level import *
 
 class LevelTest(unittest.TestCase):
 
@@ -93,7 +93,6 @@ class LevelTest(unittest.TestCase):
     self.assertEqual(source_tile.type, "corridor");
     self.assertEqual(target_tile.type, "corridor");
     self.assertEqual(inbetween_tile.type, "corridor");
-
 
 
 if __name__ is '__main__':

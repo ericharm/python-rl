@@ -5,7 +5,7 @@ import curses
 
 sys.path.insert(0,os.path.abspath(__file__+"/../.."))
 
-from lib.tile import Tile
+from src.tile import Tile
 
 class TileTest(unittest.TestCase):
 
@@ -82,6 +82,7 @@ class TileTest(unittest.TestCase):
     north.set_type("corridor")
     adjacents = [west, east, north, south]
     self.assertFalse(tile.dead_end(adjacents))
+
 
 if __name__ is '__main__':
   unittest.main()
