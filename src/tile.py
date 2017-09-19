@@ -11,18 +11,11 @@ class Tile:
     self.in_periphery = False
 
   def char(self):
-    if self.type is "floor":
-      return "."
-    elif self.type is "wall":
-      return " "
-    elif self.type is "empty":
-      return " "
-    elif self.type is "corridor":
-      return "#"
-    elif self.type is "stairs_down":
-      return ">"
-    elif self.type is "stairs_up":
-      return "<"
+    chars = {
+        "floor": ".", "wall": " ", "empty": " ", "corridor": "#",
+        "stairs_down": ">", "stairs_up": "<"
+      }
+    return chars[self.type]
 
   def color(self):
     if self.type is "floor":
