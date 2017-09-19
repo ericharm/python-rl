@@ -1,4 +1,4 @@
-import curses
+# import curses
 
 class Tile:
 
@@ -17,17 +17,12 @@ class Tile:
       }
     return chars[self.type]
 
-  def color(self):
-    if self.type is "floor":
-      return curses.color_pair(4)
-    elif self.type is "wall":
-      return curses.color_pair(5)
-    elif self.type is "empty":
-      return curses.color_pair(1)
-    elif self.type is "corridor":
-      return curses.color_pair(3)
-    elif self.type is "stairs_down" or self.type is "stairs_up":
-      return curses.color_pair(2)
+  def color(self, curses):
+    colors = {
+        "floor": 4, "wall": 5, "empty": 1, "corridor": 3,
+        "stairs_down": 2, "stairs_up": 2
+      }
+    return curses.color_pair(colors[self.type])
 
   def set_type(self, new_type):
     self.type = new_type
@@ -36,8 +31,8 @@ class Tile:
     walkables = ["floor", "corridor", "stairs_down", "stairs_up"]
     return walkables.count(self.type) > 0
 
-  def draw(self, screen):
-     screen.addstr(self.y, self.x, self.char(), self.color())
+  def draw(self, curses, screen):
+    return screen.addstr(self.y, self.x, self.char(), self.color(curses))
 
   def odd(self):
     return self.x % 2 != 0 and self.y % 2 != 0

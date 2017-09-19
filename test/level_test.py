@@ -26,9 +26,6 @@ class LevelTest(unittest.TestCase):
     }
     self.level = Level(self.config)
     self.level.create_empty_tiles()
-    self.generator = Generator()
-    self.generator.config = self.config
-    self.generator.level = self.level
 
   def test_level_initializes_without_tiles(self):
     level = Level(self.config)
@@ -41,20 +38,20 @@ class LevelTest(unittest.TestCase):
     self.assertEqual(len(level.tiles[0]), self.config['height'])
 
   def test_generator_generates_rooms(self):
-    self.assertEqual(0, len(self.generator.rooms))
-    self.generator.generate_rooms()
-    self.assertGreater(len(self.generator.rooms), 0,
+    self.assertEqual(0, len(self.level.rooms))
+    self.level.generate_rooms()
+    self.assertGreater(len(self.level.rooms), 0,
                        "Generator should have created at least one room")
 
   def test_level_inserts_rooms(self):
     tiles = self.level.tiles
     self.assertEqual(0, self.floor_tile_count())
-    self.generator.generate_rooms()
-    self.level.insert_rooms(self.generator.rooms)
+    self.level.generate_rooms()
+    self.level.insert_rooms()
     self.assertGreater(self.floor_tile_count(), 0)
 
   def test_generator_gets_odd_numbers(self):
-    number = self.generator.odd_number(1,100)
+    number = self.level.odd_number(1,100)
     self.assertFalse(number % 2 is 0)
 
   def test_room_does_not_collide_with_isolated_room(self):
@@ -80,8 +77,8 @@ class LevelTest(unittest.TestCase):
     self.assertTrue(room.within_level(level))
 
   def test_get_random_floor_tile(self):
-    self.generator.generate_rooms()
-    self.level.insert_rooms(self.generator.rooms)
+    self.level.generate_rooms()
+    self.level.insert_rooms()
     tile = self.level.get_random_floor_tile()
     self.assertEqual(tile.type, "floor")
 
@@ -89,7 +86,7 @@ class LevelTest(unittest.TestCase):
     source_tile = self.level.tiles[1][1]
     target_tile = self.level.tiles[3][1]
     inbetween_tile = self.level.tiles[2][1]
-    self.generator.connect_neighbors_as_corridor(source_tile, target_tile)
+    self.level.connect_neighbors_as_corridor(source_tile, target_tile)
     self.assertEqual(source_tile.type, "corridor");
     self.assertEqual(target_tile.type, "corridor");
     self.assertEqual(inbetween_tile.type, "corridor");

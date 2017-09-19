@@ -1,5 +1,5 @@
 from level import Level
-from hero import Hero
+from entity import Hero
 import curses
 import random
 
@@ -21,7 +21,7 @@ class Game:
       self.update()
 
   def draw(self, screen):
-    self.level.draw(screen)
+    self.level.draw(curses, screen)
     screen.addstr(self.hero.y, self.hero.x, '@', curses.color_pair(5))
 
   def handle_input(self, keyboard):

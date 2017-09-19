@@ -6,24 +6,77 @@ class Level:
   def __init__(self, config):
     self.config = config
     self.tiles = []
+    self.rooms = []
     self.width = config['width']
     self.height = config['height']
     self.room_settings = config['rooms']
 
   def generate(self):
     self.create_empty_tiles()
-    generator = Generator()
-    generator.generate_level(self, self.config)
-    self.insert_rooms(generator.rooms)
+    self.generate_rooms()
+    self.generate_corridors()
+    self.insert_rooms()
     for times in range(0, 20):
       self.remove_dead_ends()
     return self
 
-  def with_stairs_up(self, hero): #
+  def generate_rooms(self):
+    room_config = self.config['rooms']
+    for attempt in range(0, room_config['generation_attempts']):
+      room = self.generate_odd_sized_room(room_config)
+      if (room.isolated_from_rooms(self.rooms) and room.within_level(self)):
+        self.rooms.append(room)
+
+  def generate_odd_sized_room(self, room_config):
+    x = self.odd_number(0, self.config['width'])
+    y = self.odd_number(0, self.config['height'])
+    wd = self.odd_number(room_config['min_width'], room_config['max_width'])
+    ht = self.odd_number(room_config['min_height'], room_config['max_height'])
+    return Room(x, y, wd, ht)
+
+  def generate_corridors(self):
+    while len(self.get_odd_empty_tiles()) > 0:
+      tiles = self.get_odd_empty_tiles()
+      tree = [tiles[0]] # could start at a random instead
+      self.generate_corridor(tiles, tree, tiles[0])
+
+  def generate_corridor(self, tiles, tree, source_tile):
+    # build a corridor using recursive maze generation algorithm
+    current_tile = source_tile
+    while len(tree) > 0:
+      neighbors = current_tile.get_neighbors(tiles)
+      if len(neighbors) > 0:
+        neighbor = neighbors[random.randint(0, len(neighbors)) - 1]
+        self.connect_neighbors_as_corridor(current_tile, neighbor)
+        current_tile = neighbor
+        tree.append(current_tile)
+      else:
+        if current_tile.type is "empty":
+          current_tile.type = "corridor"
+        current_tile = tree.pop()
+
+  def connect_neighbors_as_corridor(self, source_tile, target_tile):
+    source_tile.set_type("corridor")
+    target_x = target_tile.x
+    target_y = target_tile.y
+    self.tiles[target_x][target_y].set_type("corridor")
+    direction = target_tile.direction_from(source_tile)
+    between_x = direction[0] + source_tile.x
+    between_y = direction[1] + source_tile.y
+    self.tiles[between_x][between_y].set_type("corridor")
+
+  def odd_number(self, min_, max_):
+    number = (random.randint(min_, max_))
+    if (number % 2 is 0):
+      return number + 1
+    else:
+      return number
+
+  def with_stairs_up(self, hero):
     self.tiles[hero.x][hero.y].set_type("stairs_up")
     return self
 
-  def with_stairs_down(self): #
+  def with_stairs_down(self):
     tile = self.get_random_floor_tile()
     tile.set_type('stairs_down')
     return self
@@ -36,8 +89,8 @@ class Level:
         tile = Tile(x,y)
         self.tiles[x][y] = tile
 
-  def insert_rooms(self, rooms):
-    for room in rooms:
+  def insert_rooms(self):
+    for room in self.rooms:
       for column in range (room.x, room.x + room.width):
         for row in range (room.y, room.y + room.height):
           self.tiles[column][row].set_type('floor')
@@ -70,7 +123,7 @@ class Level:
           odd_empty_tiles.append(self.tiles[column][row])
     return odd_empty_tiles
 
-  def get_adjacent_tiles(self, x, y): #
+  def get_adjacent_tiles(self, x, y):
     adjacents = []
     if (x > 1):
       adjacents.append(self.tiles[x-1][y])
@@ -90,74 +143,10 @@ class Level:
         if (tile.type is "corridor" and tile.dead_end(adjacents)):
           tile.set_type("empty");
 
-  def draw(self, screen):
+  def draw(self, curses, screen):
     for x in range(0,self.width):
       for y in range(0,self.height):
-        self.tiles[x][y].draw(screen)
-
-
-class Generator:
-
-  def __init__(self):
-    self.rooms = []
-
-  def generate_level(self, level, config):
-    self.level = level
-    self.config = config
-    self.generate_rooms()
-    self.generate_corridors()
-
-  def generate_rooms(self):
-    room_config = self.config['rooms']
-    for attempt in range(0, room_config['generation_attempts']):
-      room = self.generate_odd_sized_room(room_config)
-      if (room.isolated_from_rooms(self.rooms) and room.within_level(self.level)):
-        self.rooms.append(room)
-
-  def generate_odd_sized_room(self, room_config):
-    x = self.odd_number(0, self.config['width'])
-    y = self.odd_number(0, self.config['height'])
-    wd = self.odd_number(room_config['min_width'], room_config['max_width'])
-    ht = self.odd_number(room_config['min_height'], room_config['max_height'])
-    return Room(x, y, wd, ht)
-
-  def generate_corridors(self):
-    while len(self.level.get_odd_empty_tiles()) > 0:
-      tiles = self.level.get_odd_empty_tiles()
-      tree = [tiles[0]] # could start at a random instead
-      self.generate_corridor(tiles, tree, tiles[0])
-
-  def generate_corridor(self, tiles, tree, source_tile):
-    # build a corridor using recursive maze generation algorithm
-    current_tile = source_tile
-    while len(tree) > 0:
-      neighbors = current_tile.get_neighbors(tiles)
-      if len(neighbors) > 0:
-        neighbor = neighbors[random.randint(0, len(neighbors)) - 1]
-        self.connect_neighbors_as_corridor(current_tile, neighbor)
-        current_tile = neighbor
-        tree.append(current_tile)
-      else:
-        if current_tile.type is "empty":
-          current_tile.type = "corridor"
-        current_tile = tree.pop()
-
-  def connect_neighbors_as_corridor(self, source_tile, target_tile):
-    source_tile.set_type("corridor")
-    target_x = target_tile.x
-    target_y = target_tile.y
-    self.level.tiles[target_x][target_y].set_type("corridor")
-    direction = target_tile.direction_from(source_tile)
-    between_x = direction[0] + source_tile.x
-    between_y = direction[1] + source_tile.y
-    self.level.tiles[between_x][between_y].set_type("corridor")
-
-  def odd_number(self, min_, max_):
-    number = (random.randint(min_, max_))
-    if (number % 2 is 0):
-      return number + 1
-    else:
-      return number
+        self.tiles[x][y].draw(curses, screen)
 
 
 class Room:

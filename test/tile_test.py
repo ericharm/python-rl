@@ -1,11 +1,24 @@
 import os
 import sys
 import unittest
-import curses
 
 sys.path.insert(0,os.path.abspath(__file__+"/../.."))
 
 from src.tile import Tile
+
+class MockCurses:
+
+  def color_pair(self, num):
+    colors = {
+        0: "BLACK", 1: "RED", 2: "GREEN", 3: "BLUE", 4: "YELLOW", 5: "MAGENTA"
+      }
+    return colors[num]
+
+class MockScreen:
+
+  def addstr(self, y, x, string, color):
+    return True
+
 
 class TileTest(unittest.TestCase):
 
@@ -22,6 +35,17 @@ class TileTest(unittest.TestCase):
   def test_char(self):
     self.tile.type = "corridor"
     self.assertEqual("#", self.tile.char())
+
+  def test_color(self):
+    self.tile.type = "stairs_up"
+    curses = MockCurses()
+    self.assertEqual("GREEN", self.tile.color(curses))
+
+  def test_draw(self):
+    curses = MockCurses()
+    screen = MockScreen()
+    # nice for coverage but it doesn't actually test much
+    self.assertTrue(self.tile.draw(curses, screen))
 
   def test_empty(self):
     self.assertTrue(self.tile.empty());
@@ -41,6 +65,14 @@ class TileTest(unittest.TestCase):
     self.assertFalse(even_tile.odd())
     self.assertTrue(odd_tile.odd())
     self.assertFalse(mixed_tile.odd())
+
+  def test_get_neighbors(self):
+    empty_west = Tile(0, 3)
+    empty_north = Tile(2, 1)
+    floor_east = Tile(4, 3)
+    floor_east.set_type("floor")
+    tiles_to_check = [empty_west, empty_north, floor_east]
+    self.assertEqual(self.tile.get_neighbors(tiles_to_check), [empty_west, empty_north])
 
   def test_at_distance(self):
     horizontally_aligned_tile = Tile(10, 3)
