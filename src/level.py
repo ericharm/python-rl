@@ -9,7 +9,6 @@ class Level:
     self.rooms = []
     self.width = config['width']
     self.height = config['height']
-    self.room_settings = config['rooms']
 
   def generate(self):
     self.create_empty_tiles()
