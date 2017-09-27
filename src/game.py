@@ -30,7 +30,7 @@ class Game:
     self.hero.draw(curses, self.window)
     pad = self.config['windows']['level']
     self.window.refresh(0, 0, pad['y'], pad['x'], curses.LINES - 1, curses.COLS - 1)
-    # draw hud - there will be a hud class later
+    # there will be a hud class later
     self.draw_hud()
 
   def draw_hud(self):
