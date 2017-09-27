@@ -4,6 +4,16 @@ class Entity:
     self.x = x
     self.y = y
 
+  def char(self):
+    return "@"
+
+  def color(self, curses):
+    return curses.color_pair(5)
+
+  def draw(self, curses, screen):
+    return screen.addstr(self.y, self.x, self.char(), self.color(curses))
+
+
 class Hero (Entity):
 
   def __init__(self, x, y):
@@ -12,3 +22,4 @@ class Hero (Entity):
 
   def set_state(self, state):
     self.state = state
+

@@ -147,7 +147,6 @@ class Level:
       for y in range(0,self.height):
         self.tiles[x][y].draw(curses, screen)
 
-
 class Room:
 
   def __init__(self, x, y, width, height):

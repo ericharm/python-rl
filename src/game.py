@@ -14,15 +14,32 @@ class Game:
     self.hero = Hero(hero_start.x, hero_start.y)
 
   def run(self, screen):
+    pads = self.config['windows']
+    self.window = curses.newpad(pads['level']['height'], pads['level']['width'])
+    self.hud = curses.newpad(pads['hud']['height'], pads['hud']['width'])
+
     playing = True
     while (playing != False):
-      self.draw(screen)
+      self.draw()
       playing = self.handle_input(screen)
       self.update()
 
-  def draw(self, screen):
-    self.level.draw(curses, screen)
-    screen.addstr(self.hero.y, self.hero.x, '@', curses.color_pair(5))
+  def draw(self):
+    # draw level
+    self.level.draw(curses, self.window)
+    self.hero.draw(curses, self.window)
+    pad = self.config['windows']['level']
+    self.window.refresh(0, 0, pad['y'], pad['x'], curses.LINES - 1, curses.COLS - 1)
+    # draw hud - there will be a hud class later
+    self.draw_hud()
+
+  def draw_hud(self):
+    pad = self.config['windows']['hud']
+    for x in range(0, pad['width'] - 1):
+      for y in range(0, pad['height']):
+        if (x is 0 or x is pad['width'] - 2 or y is 0 or y is pad['height'] - 1):
+          self.hud.addstr(y, x, ".", curses.color_pair(6))
+    self.hud.refresh(0, 0, pad['y'], pad['x'], curses.LINES - 1, curses.COLS - 1)
 
   def handle_input(self, keyboard):
       # once this gets long we will implement a Player object
