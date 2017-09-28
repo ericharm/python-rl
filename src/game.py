@@ -65,3 +65,19 @@ class Game:
     else:
       return Level(self.config['level']).generate().with_stairs_up(self.hero)
 
+  def descend_stairs(self): #
+    self.current_level += 1
+    if len(self.levels) <= self.current_level:
+      level = self.generate_next_level()
+      self.levels.append(level)
+    self.level = self.levels[self.current_level]
+
+  def ascend_stairs(self): #
+    self.current_level -= 1
+    self.level = self.levels[self.current_level]
+
+  def is_walkable(self, x, y): #
+    if y >= self.level.height or x >= self.level.width:
+      return False
+    return self.level.tiles[x][y].walkable()
+
