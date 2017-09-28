@@ -3,6 +3,7 @@ class Entity:
   def __init__(self, x, y):
     self.x = x
     self.y = y
+    self.inventory = []
 
   def char(self):
     return " "
@@ -19,6 +20,9 @@ class Hero (Entity):
   def __init__(self, x, y):
     Entity.__init__(self, x, y)
     self.state = "moving"
+    self.inventory = [{"name": "Health", "quantity": 3},
+                      {"name": "Rocks",  "quantity": 8},
+                      {"name": "Zapgun Charges", "quantity": 2}]
 
   def set_state(self, state):
     self.state = state
@@ -28,5 +32,4 @@ class Hero (Entity):
 
   def color(self, curses):
     return curses.color_pair(5)
-
 
