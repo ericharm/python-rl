@@ -33,3 +33,11 @@ class Hero (Entity):
   def color(self, curses):
     return curses.color_pair(5)
 
+
+class Enemy (Entity):
+
+  def char(self):
+    return "a"
+
+  def color(self, curses):
+    curses.color_pair(7)

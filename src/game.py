@@ -14,6 +14,7 @@ class Game:
     self.levels = [self.level]
     hero_start = self.level.get_random_floor_tile()
     self.hero = Hero(hero_start.x, hero_start.y)
+    self.level.tiles[hero_start.x][hero_start.y].entities.append(self.hero)
 
   def run(self, screen):
     self.create_windows(self.config['windows'])
@@ -27,14 +28,13 @@ class Game:
   def draw(self):
     self.level.draw(curses, self.window)
     # this step will later draw an array of entities
-    self.hero.draw(curses, self.window)
+    # self.hero.draw(curses, self.window)
     self.hud.draw(curses, self.hero.inventory)
     window_config = self.config['windows']['game']
     self.window.refresh(0, 0, window_config['y'], window_config['x'],
                         curses.LINES - 1, curses.COLS - 1)
 
   def handle_input(self, keyboard):
-      # once this gets long we will implement a Player object
       try:
         key_in = keyboard.getkey()
       except:

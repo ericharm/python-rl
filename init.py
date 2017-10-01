@@ -22,6 +22,8 @@ def init_curses():
   curses.init_pair(4, curses.COLOR_RED, curses.COLOR_BLACK)
   curses.init_pair(5, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
   curses.init_pair(6, curses.COLOR_WHITE, curses.COLOR_BLACK)
+  curses.init_pair(7, curses.COLOR_YELLOW, curses.COLOR_BLACK)
+
   curses.noecho()
   curses.cbreak()
 

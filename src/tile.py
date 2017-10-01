@@ -7,6 +7,7 @@ class Tile:
     self.revealed = False
     self.visible = False
     self.in_periphery = False
+    self.entities = []
 
   def char(self):
     chars = {
@@ -30,13 +31,19 @@ class Tile:
     return walkables.count(self.type) > 0
 
   def draw(self, curses, screen):
-    return screen.addstr(self.y, self.x, self.char(), self.color(curses))
+    screen.addstr(self.y, self.x, self.char(), self.color(curses))
+    for entity in range(0, len(self.entities)):
+      self.entities[entity].draw(curses, screen)
+    return True
 
   def odd(self):
     return self.x % 2 != 0 and self.y % 2 != 0
 
   def empty(self):
     return self.type is "empty"
+
+  def unoccupied(self):
+    return len(self.entities) is 0;
 
   def get_neighbors(self, tiles):
     tiles_at_distance_two = list(filter(lambda tile: tile.at_distance(2, self), tiles))
