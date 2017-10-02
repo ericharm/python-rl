@@ -26,9 +26,9 @@ class Game:
       self.update()
 
   def draw(self):
+    # draw level, its tiles, their entities
     self.level.draw(curses, self.window)
-    # this step will later draw an array of entities
-    # self.hero.draw(curses, self.window)
+    # draw hud
     self.hud.draw(curses, self.hero.inventory)
     window_config = self.config['windows']['game']
     self.window.refresh(0, 0, window_config['y'], window_config['x'],

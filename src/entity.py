@@ -40,4 +40,4 @@ class Enemy (Entity):
     return "a"
 
   def color(self, curses):
-    curses.color_pair(7)
+    return curses.color_pair(7)

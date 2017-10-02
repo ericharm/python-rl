@@ -1,4 +1,5 @@
 from tile import Tile
+from entity import Enemy
 import random
 
 class Level:
@@ -17,7 +18,15 @@ class Level:
     self.insert_rooms()
     for times in range(0, 20):
       self.remove_dead_ends()
+    self.insert_enemies()
     return self
+
+  def insert_enemies(self):
+    enemies = 0
+    while enemies < 3:
+      tile = self.get_random_walkable_unoccupied_tile()
+      tile.entities.append(Enemy(tile.x, tile.y))
+      enemies = enemies + 1
 
   def generate_rooms(self):
     room_config = self.config['rooms']
@@ -106,6 +115,12 @@ class Level:
   def get_random_floor_tile(self):
     random_tile = self.get_random_tile()
     while random_tile.type != 'floor':
+      random_tile = self.get_random_tile()
+    return random_tile
+
+  def get_random_walkable_unoccupied_tile(self):
+    random_tile = self.get_random_tile()
+    while not random_tile.walkable() and random_tile.unoccupied():
       random_tile = self.get_random_tile()
     return random_tile
 
