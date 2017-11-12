@@ -14,7 +14,8 @@ class Game:
     self.levels = [self.level]
     hero_start = self.level.get_random_floor_tile()
     self.hero = Hero(hero_start.x, hero_start.y)
-    self.level.tiles[hero_start.x][hero_start.y].entities.append(self.hero)
+    # self.level.tiles[hero_start.x][hero_start.y].entities.append(self.hero)
+    self.level.entities.append(self.hero)
 
   def run(self, screen):
     self.create_windows(self.config['windows'])
@@ -43,9 +44,7 @@ class Game:
 
 
   def update(self):
-    # this is where we will handle AI and zapgun projectiles
-    update = True
-
+    self.level.update()
 
   # private
 

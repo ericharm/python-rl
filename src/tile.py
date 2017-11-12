@@ -32,8 +32,6 @@ class Tile:
 
   def draw(self, curses, screen):
     screen.addstr(self.y, self.x, self.char(), self.color(curses))
-    for entity in range(0, len(self.entities)):
-      self.entities[entity].draw(curses, screen)
     return True
 
   def odd(self):
@@ -42,8 +40,8 @@ class Tile:
   def empty(self):
     return self.type is "empty"
 
-  def unoccupied(self):
-    return len(self.entities) is 0;
+  # def unoccupied(self):
+    # return len(self.entities) is 0;
 
   def get_neighbors(self, tiles):
     tiles_at_distance_two = list(filter(lambda tile: tile.at_distance(2, self), tiles))

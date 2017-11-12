@@ -7,9 +7,21 @@ class Level:
   def __init__(self, config):
     self.config = config
     self.tiles = []
+    self.entities = []
     self.rooms = []
     self.width = config['width']
     self.height = config['height']
+
+  def draw(self, curses, screen):
+    for x in range(0,self.width):
+      for y in range(0,self.height):
+        self.tiles[x][y].draw(curses, screen)
+    for entity in range(0, len(self.entities)):
+      self.entities[entity].draw(curses, screen)
+
+  def update(self):
+    for entity in range(0, len(self.entities)):
+      self.entities[entity].update(self)
 
   def generate(self):
     self.create_empty_tiles()
@@ -21,11 +33,23 @@ class Level:
     self.insert_enemies()
     return self
 
+  def with_stairs_up(self, hero):
+    self.tiles[hero.x][hero.y].set_type("stairs_up")
+    return self
+
+  def with_stairs_down(self):
+    tile = self.get_random_floor_tile()
+    tile.set_type('stairs_down')
+    return self
+
+  # private
+
   def insert_enemies(self):
     enemies = 0
     while enemies < 3:
       tile = self.get_random_walkable_unoccupied_tile()
-      tile.entities.append(Enemy(tile.x, tile.y))
+      # tile.entities.append(Enemy(tile.x, tile.y))
+      self.entities.append(Enemy(tile.x, tile.y))
       enemies = enemies + 1
 
   def generate_rooms(self):
@@ -80,15 +104,6 @@ class Level:
     else:
       return number
 
-  def with_stairs_up(self, hero):
-    self.tiles[hero.x][hero.y].set_type("stairs_up")
-    return self
-
-  def with_stairs_down(self):
-    tile = self.get_random_floor_tile()
-    tile.set_type('stairs_down')
-    return self
-
   def create_empty_tiles(self):
     for x in range(0,self.width):
       self.tiles.append([])
@@ -120,8 +135,8 @@ class Level:
 
   def get_random_walkable_unoccupied_tile(self):
     random_tile = self.get_random_tile()
-    while not random_tile.walkable() and random_tile.unoccupied():
-      random_tile = self.get_random_tile()
+    # while not random_tile.walkable() and random_tile.unoccupied():
+      # random_tile = self.get_random_tile()
     return random_tile
 
   def get_random_tile(self):
@@ -157,10 +172,6 @@ class Level:
         if (tile.type is "corridor" and tile.dead_end(adjacents)):
           tile.set_type("empty");
 
-  def draw(self, curses, screen):
-    for x in range(0,self.width):
-      for y in range(0,self.height):
-        self.tiles[x][y].draw(curses, screen)
 
 class Room:
 
