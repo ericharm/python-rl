@@ -69,7 +69,9 @@ class Game:
     if len(self.levels) <= self.current_level:
       level = self.generate_next_level()
       self.levels.append(level)
+    self.level.entities.remove(self.hero)
     self.level = self.levels[self.current_level]
+    self.level.entities.append(self.hero)
     self.level.tiles[self.hero.x][self.hero.y].entities.append(self.hero)
 
   def ascend_stairs(self): #
