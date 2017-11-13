@@ -4,45 +4,49 @@ class Player:
 
   def __init__(self, game):
     self.game = game
-
-  def add_zap_to_level(self, hero, velocity):
-    zap = Zap(hero.x, hero.y)
-    self.game.level.entities.append(zap)
-    hero.decrement_zaps()
-    zap.set_velocity(velocity[0], velocity[1])
+    self.hero = game.hero
+    self.movement_keys = {
+        "KEY_LEFT": (-1, 0),
+        "KEY_RIGHT": (1, 0),
+        "KEY_UP": (0, -1),
+        "KEY_DOWN": (0, 1),
+      }
 
   def handle_input(self, key):
-    hero = self.game.hero
+    if (self.hero.state is "moving"):
+      return self.handle_movement_action(key)
+    elif (self.hero.state is "aiming"):
+      return self.handle_aiming_action(key)
+
+  def handle_movement_action(self, key):
+    x = self.hero.x
+    y = self.hero.y
     tiles = self.game.level.tiles
-    x = hero.x
-    y = hero.y
-    if (hero.state is "moving"):
-        if (key == "KEY_LEFT" and self.game.is_walkable(x - 1, y)):
-          hero.move(-1, 0)
-        elif (key == "KEY_RIGHT" and self.game.is_walkable(x + 1, y)):
-          hero.move(1, 0)
-        elif (key == "KEY_UP" and self.game.is_walkable(x, y - 1)):
-          hero.move(0, -1)
-        elif (key == "KEY_DOWN" and self.game.is_walkable(x, y + 1)):
-          hero.move(0, 1)
-        elif (key is ">" and self.game.level.tiles[x][y].type is "stairs_down"):
-          self.game.descend_stairs()
-        elif (key is "<" and self.game.level.tiles[x][y].type is "stairs_up"):
-          self.game.ascend_stairs()
-        elif (key is " "):
-            hero.set_state("aiming")
-        elif (key is "q"):
-          return False
-    elif (hero.state is "aiming"):
-        hero.set_state("moving")
-        if (key == "KEY_LEFT" and self.game.is_walkable(x - 1, y)):
-          self.add_zap_to_level(hero, (-1, 0))
-        elif (key == "KEY_RIGHT" and self.game.is_walkable(x + 1, y)):
-          self.add_zap_to_level(hero, (1, 0))
-        elif (key == "KEY_UP" and self.game.is_walkable(x, y - 1)):
-          self.add_zap_to_level(hero, (0, -1))
-        elif (key == "KEY_DOWN" and self.game.is_walkable(x, y + 1)):
-          self.add_zap_to_level(hero, (0, 1))
-        else:
-          return True
+    if (key in self.movement_keys.keys()):
+      vector = self.movement_keys[key]
+      if (self.game.is_walkable(x + vector[0], y + vector[1])):
+        self.hero.move(vector[0], vector[1]);
+    elif (key is ">" and self.tiles()[x][y].type is "stairs_down"):
+      self.game.descend_stairs()
+    elif (key is "<" and self.tiles()[x][y].type is "stairs_up"):
+      self.game.ascend_stairs()
+    elif (key is " "):
+        self.hero.set_state("aiming")
+    elif (key is "q"):
+      return False
+
+  def handle_aiming_action(self, key):
+    self.hero.set_state("moving")
+    if (key in self.movement_keys.keys()):
+      vector = self.movement_keys[key]
+      if (self.game.is_walkable(self.hero.x + vector[0], self.hero.y + vector[1])):
+        self.add_zap_to_level(vector[0], vector[1])
+    else:
+      return True
+
+  def add_zap_to_level(self, velocity_x, velocity_y):
+    zap = Zap(self.hero.x, self.hero.y)
+    self.game.level.entities.append(zap)
+    self.hero.decrement_zaps()
+    zap.set_velocity(velocity_x, velocity_y)
 

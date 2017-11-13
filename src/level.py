@@ -8,6 +8,7 @@ class Level:
     self.config = config
     self.tiles = []
     self.entities = []
+    self.plucked = []
     self.rooms = []
     self.width = config['width']
     self.height = config['height']
@@ -20,7 +21,10 @@ class Level:
       self.entities[entity].draw(curses, screen)
 
   def update(self):
-    for entity in range(0, len(self.entities)):
+    for e in range(0, len(self.entities)):
+      # do this in reverse so that
+      # a plucked entity doesn't mess up indexes
+      entity = len(self.entities) - e - 1
       self.entities[entity].update(self)
 
   def generate(self):
