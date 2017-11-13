@@ -137,9 +137,15 @@ class Level:
 
   def get_random_walkable_unoccupied_tile(self):
     random_tile = self.get_random_tile()
-    # while not random_tile.walkable() and random_tile.unoccupied():
-      # random_tile = self.get_random_tile()
+    while not (random_tile.walkable() and not self.tile_occupied(random_tile)):
+      random_tile = self.get_random_tile()
     return random_tile
+
+  def tile_occupied(self, tile):
+    occupied_tiles = list(
+        filter(lambda entity: self.tiles[entity.x][entity.y], self.entities)
+    )
+    return (tile in occupied_tiles)
 
   def get_random_tile(self):
     x = random.randint(0, self.width - 1)
