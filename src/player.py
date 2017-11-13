@@ -26,9 +26,9 @@ class Player:
       vector = self.movement_keys[key]
       if (self.game.is_walkable(x + vector[0], y + vector[1])):
         self.hero.move(vector[0], vector[1]);
-    elif (key is ">" and self.tiles()[x][y].type is "stairs_down"):
+    elif (key is ">" and tiles[x][y].type is "stairs_down"):
       self.game.descend_stairs()
-    elif (key is "<" and self.tiles()[x][y].type is "stairs_up"):
+    elif (key is "<" and tiles[x][y].type is "stairs_up"):
       self.game.ascend_stairs()
     elif (key is " "):
         self.hero.set_state("aiming")

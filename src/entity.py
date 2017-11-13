@@ -15,10 +15,8 @@ class Entity:
     return screen.addstr(self.y, self.x, self.char(), self.color(curses))
 
   def move(self, x, y):
-    # tiles[self.x][self.y].entities.remove(self)
     self.x += x
     self.y += y
-    # tiles[self.x][self.y].entities.append(self)
 
   def update(self, level):
     return True

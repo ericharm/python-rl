@@ -50,7 +50,6 @@ class Level:
     enemies = 0
     while enemies < 3:
       tile = self.get_random_walkable_unoccupied_tile()
-      # tile.entities.append(Enemy(tile.x, tile.y))
       self.entities.append(Enemy(tile.x, tile.y))
       enemies = enemies + 1
 

@@ -7,7 +7,7 @@ class Tile:
     self.revealed = False
     self.visible = False
     self.in_periphery = False
-    self.entities = []
+    # self.entities = []
 
   def char(self):
     chars = {
@@ -39,9 +39,6 @@ class Tile:
 
   def empty(self):
     return self.type is "empty"
-
-  # def unoccupied(self):
-    # return len(self.entities) is 0;
 
   def get_neighbors(self, tiles):
     tiles_at_distance_two = list(filter(lambda tile: tile.at_distance(2, self), tiles))
