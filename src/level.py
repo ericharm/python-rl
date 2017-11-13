@@ -22,8 +22,6 @@ class Level:
 
   def update(self):
     for e in range(0, len(self.entities)):
-      # do this in reverse so that
-      # a plucked entity doesn't mess up indexes
       entity = len(self.entities) - e - 1
       self.entities[entity].update(self)
 
