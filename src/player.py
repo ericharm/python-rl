@@ -5,6 +5,12 @@ class Player:
   def __init__(self, game):
     self.game = game
 
+  def add_zap_to_level(self, hero, velocity):
+    zap = Zap(hero.x, hero.y)
+    self.game.level.entities.append(zap)
+    hero.decrement_zaps()
+    zap.set_velocity(velocity[0], velocity[1])
+
   def handle_input(self, key):
     hero = self.game.hero
     tiles = self.game.level.tiles
@@ -28,21 +34,15 @@ class Player:
         elif (key is "q"):
           return False
     elif (hero.state is "aiming"):
-        zap = Zap(hero.x, hero.y)
-        self.game.level.entities.append(zap)
         hero.set_state("moving")
         if (key == "KEY_LEFT" and self.game.is_walkable(x - 1, y)):
-            hero.decrement_zaps();
-            zap.set_velocity(-1, 0)
+          self.add_zap_to_level(hero, (-1, 0))
         elif (key == "KEY_RIGHT" and self.game.is_walkable(x + 1, y)):
-            hero.decrement_zaps();
-            zap.set_velocity(1, 0)
+          self.add_zap_to_level(hero, (1, 0))
         elif (key == "KEY_UP" and self.game.is_walkable(x, y - 1)):
-            hero.decrement_zaps();
-            zap.set_velocity(0, -1)
+          self.add_zap_to_level(hero, (0, -1))
         elif (key == "KEY_DOWN" and self.game.is_walkable(x, y + 1)):
-            hero.decrement_zaps();
-            zap.set_velocity(0, 1)
-        elif (key is "q"):
-          return False
+          self.add_zap_to_level(hero, (0, 1))
+        else:
+          return True
 
