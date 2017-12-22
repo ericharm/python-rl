@@ -4,6 +4,9 @@ class Entity:
     self.x = x
     self.y = y
     self.inventory = []
+    self.draw_priority = 1
+    self.update_priority = 1
+    self.shootable = True
 
   def char(self):
     return " "
@@ -11,15 +14,16 @@ class Entity:
   def color(self, curses):
     return curses.color_pair(1)
 
-  def draw(self, curses, screen):
-    return screen.addstr(self.y, self.x, self.char(), self.color(curses))
-
   def move(self, x, y):
     self.x += x
     self.y += y
 
+  def draw(self, curses, screen):
+    return screen.addstr(self.y, self.x, self.char(), self.color(curses))
+
   def update(self, level):
     return True
+
 
 class Hero (Entity):
 
@@ -60,6 +64,7 @@ class Zap (Entity):
   def __init__(self, x, y):
     Entity.__init__(self, x, y)
     self.velocity = { "x": x, "y": y }
+    self.shootable = False
 
   def char(self):
     if (self.velocity["x"] is 0):
@@ -80,8 +85,11 @@ class Zap (Entity):
     destination_y = self.y + self.velocity["y"]
     if (level.tiles[destination_x][destination_y].walkable()):
       self.move(self.velocity["x"], self.velocity["y"])
+      for entity in reversed(level.entities):
+        if entity.x is self.x and entity.y is self.y and entity.shootable:
+          level.entities.remove(entity)
+          level.entities.remove(self)
     else:
       level.entities.remove(self)
-
 
 

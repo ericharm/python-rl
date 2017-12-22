@@ -21,9 +21,11 @@ class Level:
       self.entities[entity].draw(curses, screen)
 
   def update(self):
-    for e in range(0, len(self.entities)):
-      entity = len(self.entities) - e - 1
-      self.entities[entity].update(self)
+    # for e in range(0, len(self.entities)):
+    for entity in reversed(self.entities):
+      # entity = len(self.entities) - e - 1
+      # self.entities[entity].update(self)
+      entity.update(self)
 
   def generate(self):
     self.create_empty_tiles()
@@ -106,9 +108,9 @@ class Level:
       return number
 
   def create_empty_tiles(self):
-    for x in range(0,self.width):
+    for x in range(0, self.width):
       self.tiles.append([])
-      for y in range(0,self.height):
+      for y in range(0, self.height):
         self.tiles[x].append(None)
         tile = Tile(x,y)
         self.tiles[x][y] = tile

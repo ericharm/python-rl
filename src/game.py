@@ -14,7 +14,6 @@ class Game:
     self.levels = [self.level]
     hero_start = self.level.get_random_floor_tile()
     self.hero = Hero(hero_start.x, hero_start.y)
-    # self.level.tiles[hero_start.x][hero_start.y].entities.append(self.hero)
     self.level.entities.append(self.hero)
 
   def run(self, screen):
