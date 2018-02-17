@@ -1,4 +1,5 @@
 from entity import Zap
+from util import Vector
 
 class Player:
 
@@ -37,15 +38,17 @@ class Player:
   def handle_aiming_action(self, key):
     self.hero.set_state("moving")
     if (key in self.movement_keys.keys()):
-      vector = self.movement_keys[key]
-      if (self.game.is_walkable(self.hero.x + vector[0], self.hero.y + vector[1])):
-        self.add_zap_to_level(vector[0], vector[1])
+      vector = Vector(self.movement_keys[key][0], self.movement_keys[key][1])
+      zap = Zap(self.hero.x, self.hero.y)
+      self.add_zap_at_vector(zap, vector)
     else:
       return True
 
-  def add_zap_to_level(self, velocity_x, velocity_y):
-    zap = Zap(self.hero.x, self.hero.y)
-    self.game.level.entities.append(zap)
-    self.hero.decrement_zaps()
-    zap.set_velocity(velocity_x, velocity_y)
+  def add_zap_at_vector(self, zap, vector):
+    destination_x = zap.x + vector.x
+    destination_y = zap.y + vector.y
+    if (self.game.level.tiles[destination_x][destination_y].walkable()):
+      self.game.level.entities.append(zap)
+      self.hero.decrement_zaps()
+      zap.set_velocity(vector.x, vector.y)
 

@@ -78,8 +78,3 @@ class Game:
     self.level = self.levels[self.current_level]
     self.level.entities.append(self.hero)
 
-  def is_walkable(self, x, y): #
-    if y >= self.level.height or x >= self.level.width:
-      return False
-    return self.level.tiles[x][y].walkable()
-
