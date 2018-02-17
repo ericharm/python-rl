@@ -111,6 +111,7 @@ class Level:
         self.tiles[x].append(None)
         tile = Tile(x,y)
         self.tiles[x][y] = tile
+    return self
 
   def insert_rooms(self):
     for room in self.rooms:

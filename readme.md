@@ -12,3 +12,7 @@ This is intended to be a space-themed roguelike written in Python
 ## Tests
 - `pytest test/`
 
+### Coverage
+- pytest --cov=src test
+- coverage html
+- open htmlcov/index.html

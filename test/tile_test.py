@@ -6,20 +6,6 @@ sys.path.insert(0,os.path.abspath(__file__+"/../.."))
 
 from src.tile import Tile
 
-class MockCurses:
-
-  def color_pair(self, num):
-    colors = {
-        0: "BLACK", 1: "RED", 2: "GREEN", 3: "BLUE", 4: "YELLOW", 5: "MAGENTA"
-      }
-    return colors[num]
-
-class MockScreen:
-
-  def addstr(self, y, x, string, color):
-    return True
-
-
 class TileTest(unittest.TestCase):
 
   def setUp(self):
@@ -37,9 +23,9 @@ class TileTest(unittest.TestCase):
     self.assertEqual("#", self.tile.char())
 
   def test_empty(self):
-    self.assertTrue(self.tile.empty());
+    self.assertTrue(self.tile.empty())
     self.tile.set_type("wall")
-    self.assertFalse(self.tile.empty());
+    self.assertFalse(self.tile.empty())
 
   def test_walkable(self):
     self.tile.set_type("floor")
@@ -103,8 +89,4 @@ class TileTest(unittest.TestCase):
     north.set_type("corridor")
     adjacents = [west, east, north, south]
     self.assertFalse(tile.dead_end(adjacents))
-
-
-if __name__ is '__main__':
-  unittest.main()
 

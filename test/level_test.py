@@ -91,7 +91,3 @@ class LevelTest(unittest.TestCase):
     self.assertEqual(target_tile.type, "corridor");
     self.assertEqual(inbetween_tile.type, "corridor");
 
-
-if __name__ is '__main__':
-  unittest.main()
-

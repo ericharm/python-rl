@@ -48,6 +48,7 @@ class Hero (Entity):
 
   def set_state(self, state):
     self.state = state
+    return self
 
   def char(self):
     return '@'
@@ -56,9 +57,8 @@ class Hero (Entity):
     return Color.use('magenta')
 
   def decrement_zaps(self):
-    zaps = list(filter(lambda item: item['name'] == 'Zapgun Charges', self.inventory))
-    if (len(zaps) > 0):
-      zaps[0]['quantity'] -= 1
+    zaps = reduce(lambda a, b: a if a['name'] is 'Zapgun Charges' else b, self.inventory)
+    zaps['quantity'] -= 1
 
 
 class Enemy (Entity):
@@ -96,12 +96,7 @@ class Zap (Entity):
     self.shootable = False
 
   def char(self):
-    if (self.velocity.x is 0):
-      return '|'
-    elif (self.velocity.y is 0):
-      return '-'
-    else:
-      return '?'
+    return '|' if self.velocity.x is 0 else '-'
 
   def color(self):
     return Color.use('white')
