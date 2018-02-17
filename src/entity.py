@@ -1,4 +1,5 @@
 from util import *
+import curses
 
 class Entity:
 
@@ -20,7 +21,8 @@ class Entity:
   def move(self, x, y, level):
     destination_x = self.x + x
     destination_y = self.y + y
-    if (level.tiles[destination_x][destination_y].walkable()):
+    if (destination_x < level.width and destination_y < level.height
+    and level.tiles[destination_x][destination_y].walkable()):
       self.x += x
       self.y += y
 
