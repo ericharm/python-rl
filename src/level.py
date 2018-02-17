@@ -21,10 +21,7 @@ class Level:
       self.entities[entity].draw(curses, screen)
 
   def update(self):
-    # for e in range(0, len(self.entities)):
     for entity in reversed(self.entities):
-      # entity = len(self.entities) - e - 1
-      # self.entities[entity].update(self)
       entity.update(self)
 
   def generate(self):
