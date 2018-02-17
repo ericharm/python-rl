@@ -9,7 +9,6 @@ class Tile:
     self.revealed = False
     self.visible = False
     self.in_periphery = False
-    # self.entities = []
 
   def char(self):
     chars = {
@@ -18,7 +17,7 @@ class Tile:
       }
     return chars[self.type]
 
-  def color(self, curses):
+  def color(self):
     colors = {
         'floor': 'red', 'wall': 'magenta', 'empty': 'black', 'corridor': 'blue',
         'stairs_down': 'green', 'stairs_up': 'green'
@@ -32,8 +31,8 @@ class Tile:
     walkables = ['floor', 'corridor', 'stairs_down', 'stairs_up']
     return walkables.count(self.type) > 0
 
-  def draw(self, curses, screen):
-    screen.addstr(self.y, self.x, self.char(), self.color(curses))
+  def draw(self, screen):
+    screen.addstr(self.y, self.x, self.char(), self.color())
     return True
 
   def odd(self):

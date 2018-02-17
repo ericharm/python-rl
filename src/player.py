@@ -24,7 +24,6 @@ class Player:
     tiles = self.game.level.tiles
     if (key in self.movement_keys.keys()):
       vector = self.movement_keys[key]
-      #  if (self.game.is_walkable(x + vector[0], y + vector[1])):
       self.hero.move(vector[0], vector[1], self.game.level);
     elif (key is ">" and tiles[x][y].type is "stairs_down"):
       self.game.descend_stairs()

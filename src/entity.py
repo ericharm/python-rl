@@ -14,7 +14,7 @@ class Entity:
   def char(self):
     return ' '
 
-  def color(self, curses):
+  def color(self):
     return Color.use('black')
 
   def move(self, x, y, level):
@@ -24,8 +24,8 @@ class Entity:
       self.x += x
       self.y += y
 
-  def draw(self, curses, screen):
-    return screen.addstr(self.y, self.x, self.char(), self.color(curses))
+  def draw(self, screen):
+    return screen.addstr(self.y, self.x, self.char(), self.color())
 
   def update(self, level):
     return True
@@ -51,7 +51,7 @@ class Hero (Entity):
   def char(self):
     return '@'
 
-  def color(self, curses):
+  def color(self):
     return Color.use('magenta')
 
   def decrement_zaps(self):
@@ -69,7 +69,7 @@ class Enemy (Entity):
   def char(self):
     return 'a'
 
-  def color(self, curses):
+  def color(self):
     return Color.use('yellow')
 
   def in_acting_range(self, hero):
@@ -102,7 +102,7 @@ class Zap (Entity):
     else:
       return '?'
 
-  def color(self, curses):
+  def color(self):
     return Color.use('white')
 
   def set_velocity(self, x, y):

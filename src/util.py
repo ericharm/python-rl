@@ -24,6 +24,7 @@ class Chance:
   def flip_coin():
     return random.choice([True, False])
 
+
 class Color:
   colors = {
       'black': 1,

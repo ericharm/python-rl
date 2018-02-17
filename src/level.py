@@ -13,12 +13,12 @@ class Level:
     self.width = config['width']
     self.height = config['height']
 
-  def draw(self, curses, screen):
+  def draw(self, screen):
     for x in range(0,self.width):
       for y in range(0,self.height):
-        self.tiles[x][y].draw(curses, screen)
+        self.tiles[x][y].draw(screen)
     for entity in range(0, len(self.entities)):
-      self.entities[entity].draw(curses, screen)
+      self.entities[entity].draw(screen)
 
   def update(self):
     for entity in reversed(self.entities):
