@@ -1,7 +1,9 @@
+from util import Color
+
 class Tile:
 
   def __init__(self, x, y):
-    self.type = "empty"
+    self.type = 'empty'
     self.x = x
     self.y = y
     self.revealed = False
@@ -11,23 +13,23 @@ class Tile:
 
   def char(self):
     chars = {
-        "floor": ".", "wall": " ", "empty": " ", "corridor": "#",
-        "stairs_down": ">", "stairs_up": "<"
+        'floor': '.', 'wall': ' ', 'empty': ' ', 'corridor': '#',
+        'stairs_down': '>', 'stairs_up': '<'
       }
     return chars[self.type]
 
   def color(self, curses):
     colors = {
-        "floor": 4, "wall": 5, "empty": 1, "corridor": 3,
-        "stairs_down": 2, "stairs_up": 2
+        'floor': 'red', 'wall': 'magenta', 'empty': 'black', 'corridor': 'blue',
+        'stairs_down': 'green', 'stairs_up': 'green'
       }
-    return curses.color_pair(colors[self.type])
+    return Color.use(colors[self.type])
 
   def set_type(self, new_type):
     self.type = new_type
 
   def walkable(self):
-    walkables = ["floor", "corridor", "stairs_down", "stairs_up"]
+    walkables = ['floor', 'corridor', 'stairs_down', 'stairs_up']
     return walkables.count(self.type) > 0
 
   def draw(self, curses, screen):
@@ -38,7 +40,7 @@ class Tile:
     return self.x % 2 != 0 and self.y % 2 != 0
 
   def empty(self):
-    return self.type is "empty"
+    return self.type is 'empty'
 
   def get_neighbors(self, tiles):
     tiles_at_distance_two = list(filter(lambda tile: tile.at_distance(2, self), tiles))
@@ -68,5 +70,5 @@ class Tile:
     empties = list(filter(lambda tile: tile.empty(), adjacents))
     walkables = list(filter(lambda tile: tile.walkable(), adjacents))
     return (len(empties) is (len(adjacents) - 1) and len(walkables) is 1
-            and self.type is "corridor")
+            and self.type is 'corridor')
 

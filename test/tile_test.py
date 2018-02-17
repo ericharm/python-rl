@@ -36,16 +36,16 @@ class TileTest(unittest.TestCase):
     self.tile.type = "corridor"
     self.assertEqual("#", self.tile.char())
 
-  def test_color(self):
-    self.tile.type = "stairs_up"
-    curses = MockCurses()
-    self.assertEqual("GREEN", self.tile.color(curses))
+  #  def test_color(self):
+    #  self.tile.type = "stairs_up"
+    #  curses = MockCurses()
+    #  self.assertEqual("GREEN", self.tile.color(curses))
 
-  def test_draw(self):
-    curses = MockCurses()
-    screen = MockScreen()
+  #  def test_draw(self):
+    #  curses = MockCurses()
+    #  screen = MockScreen()
     # nice for coverage but it doesn't actually test much
-    self.assertTrue(self.tile.draw(curses, screen))
+    #  self.assertTrue(self.tile.draw(curses, screen))
 
   def test_empty(self):
     self.assertTrue(self.tile.empty());

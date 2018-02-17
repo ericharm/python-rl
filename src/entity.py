@@ -15,7 +15,7 @@ class Entity:
     return ' '
 
   def color(self, curses):
-    return curses.color_pair(1)
+    return Color.use('black')
 
   def move(self, x, y, level):
     destination_x = self.x + x
@@ -52,7 +52,7 @@ class Hero (Entity):
     return '@'
 
   def color(self, curses):
-    return curses.color_pair(5)
+    return Color.use('magenta')
 
   def decrement_zaps(self):
     zaps = list(filter(lambda item: item['name'] == 'Zapgun Charges', self.inventory))
@@ -70,7 +70,7 @@ class Enemy (Entity):
     return 'a'
 
   def color(self, curses):
-    return curses.color_pair(7)
+    return Color.use('yellow')
 
   def in_acting_range(self, hero):
     return True if self.distance_from_entity(hero) <= self.acting_range else False
@@ -103,7 +103,7 @@ class Zap (Entity):
       return '?'
 
   def color(self, curses):
-    return curses.color_pair(6)
+    return Color.use('white')
 
   def set_velocity(self, x, y):
     self.velocity = { 'x': x, 'y': y }

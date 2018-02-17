@@ -1,3 +1,5 @@
+from util import Color
+
 class Hud:
 
   def __init__(self, window, config):
@@ -16,12 +18,12 @@ class Hud:
         name_y = (i / 2) + 1
         q_x = 20 if name_x is 1 else 61
         q_y = name_y
-        self.window.addstr(name_y, name_x, inv[i]["name"], curses.color_pair(6))
-        self.window.addstr(q_y, q_x, str(inv[i]["quantity"]), curses.color_pair(6))
+        self.window.addstr(name_y, name_x, inv[i]["name"], Color.use('white'))
+        self.window.addstr(q_y, q_x, str(inv[i]["quantity"]), Color.use('white'))
 
   def outline(self, curses):
     for x in range(0, self.config['width'] - 1):
       for y in range(0, self.config['height']):
         if (x is 0 or x is self.config['width'] - 2 or y is 0 or y is self.config['height'] - 1):
-          self.window.addstr(y, x, ".", curses.color_pair(6))
+          self.window.addstr(y, x, ".", Color.use('white'))
 

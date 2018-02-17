@@ -1,5 +1,6 @@
 import math
 import random
+import curses
 
 class Vector:
 
@@ -22,3 +23,18 @@ class Chance:
   @staticmethod
   def flip_coin():
     return random.choice([True, False])
+
+class Color:
+  colors = {
+      'black': 1,
+      'green': 2,
+      'blue': 3,
+      'red': 4,
+      'magenta': 5,
+      'white': 6,
+      'yellow': 7
+  }
+
+  @staticmethod
+  def use(color):
+    return curses.color_pair(Color.colors[color])
