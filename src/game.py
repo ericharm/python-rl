@@ -35,7 +35,7 @@ class Game:
   def handle_input(self, keyboard):
       try:
         key_in = keyboard.getkey()
-      except:
+      except: # pragma: no cover
         key_in = "0"
       return self.player.handle_input(key_in)
 

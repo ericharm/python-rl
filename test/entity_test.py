@@ -20,7 +20,6 @@ class EntityTest(unittest.TestCase):
 
   def setup_level(self):
     level = Level(self.config).create_empty_tiles()
-    level.tiles[0][0].set_type('floor')
     for x in range(0, level.width):
       for y in range(0, level.height):
         level.tiles[x][y].set_type('floor')

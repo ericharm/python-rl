@@ -4,6 +4,14 @@ import unittest
 sys.path.insert(0,os.path.abspath(__file__+"/../.."))
 
 from src.game import Game
+from src.player import Player
+
+class MockKeyboard:
+  def __init__(self, key):
+    self.key = key
+
+  def getkey(self):
+    return self.key
 
 class GameTest(unittest.TestCase):
 
@@ -33,3 +41,14 @@ class GameTest(unittest.TestCase):
     self.assertEqual(5, game.current_level)
     game.ascend_stairs()
     self.assertEqual(4, game.current_level)
+
+  def test_handle_input(self):
+    self.config['game']['levels'] = 5
+    game = Game(self.config)
+    game.hero.x = 5
+    game.hero.y = 5
+    game.level.tiles[4][5].set_type('floor')
+    game.player = Player(game)
+    game.handle_input(MockKeyboard("KEY_LEFT"))
+    self.assertEqual(4, game.hero.x)
+
