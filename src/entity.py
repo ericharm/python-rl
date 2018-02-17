@@ -19,10 +19,9 @@ class Entity:
     return Color.use('black')
 
   def move(self, x, y, level):
-    destination_x = self.x + x
-    destination_y = self.y + y
-    if (destination_x < level.width and destination_y < level.height
-    and level.tiles[destination_x][destination_y].walkable()):
+    destination = Vector(self.x + x, self.y + y)
+    if (destination.x < level.width and destination.y < level.height
+    and level.tiles[destination.x][destination.y].walkable()):
       self.x += x
       self.y += y
 
@@ -93,13 +92,13 @@ class Zap (Entity):
 
   def __init__(self, x, y):
     Entity.__init__(self, x, y)
-    self.velocity = { 'x': x, 'y': y }
+    self.velocity = Vector(x, y)
     self.shootable = False
 
   def char(self):
-    if (self.velocity['x'] is 0):
+    if (self.velocity.x is 0):
       return '|'
-    elif (self.velocity['y'] is 0):
+    elif (self.velocity.y is 0):
       return '-'
     else:
       return '?'
@@ -108,18 +107,18 @@ class Zap (Entity):
     return Color.use('white')
 
   def set_velocity(self, x, y):
-    self.velocity = { 'x': x, 'y': y }
+    self.velocity = Vector(x, y)
 
   def update(self, level):
-    destination_x = self.x + self.velocity['x']
-    destination_y = self.y + self.velocity['y']
-    if (level.tiles[destination_x][destination_y].walkable()):
-      self.move(self.velocity['x'], self.velocity['y'], level)
-      for entity in reversed(level.entities):
-        if entity.x is self.x and entity.y is self.y and entity.shootable:
-          level.entities.remove(entity)
-          level.entities.remove(self)
+    destination = Vector(self.x + self.velocity.x, self.y + self.velocity.y)
+    if (level.tiles[destination.x][destination.y].walkable()):
+      self.move(self.velocity.x, self.velocity.y, level)
+      self.handle_entity_collisions(level)
     else:
       level.entities.remove(self)
 
-
+  def handle_entity_collisions(self, level):
+    for entity in reversed(level.entities):
+      if entity.x is self.x and entity.y is self.y and entity.shootable:
+        level.entities.remove(entity)
+        level.entities.remove(self)
