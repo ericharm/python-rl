@@ -16,7 +16,7 @@ class Game:
     self.hero = Hero(hero_start.x, hero_start.y)
     self.level.entities.append(self.hero)
 
-  def run(self, screen):
+  def run(self, screen): # pragma: no cover
     self.create_windows(self.config['windows'])
     self.player = Player(self)
     playing = True
@@ -25,7 +25,7 @@ class Game:
       playing = self.handle_input(screen)
       self.update()
 
-  def draw(self):
+  def draw(self): # pragma: no cover
     self.level.draw(self.window)
     self.hud.draw(self.hero.inventory)
     window_config = self.config['windows']['game']
@@ -45,23 +45,23 @@ class Game:
 
   # private
 
-  def create_windows(self, window_configs):
+  def create_windows(self, window_configs): # pragma: no cover
     game_win_setup = window_configs['game']
     hud_win_setup = window_configs['hud']
     self.window = curses.newpad(game_win_setup['height'], game_win_setup['width'])
     hud_pad = curses.newpad(hud_win_setup['height'], hud_win_setup['width'])
     self.hud = Hud(hud_pad, self.config['windows']['hud'])
 
-  def generate_first_level(self): #
+  def generate_first_level(self):
     return Level(self.config['level']).generate().with_stairs_down()
 
-  def generate_next_level(self): #
+  def generate_next_level(self):
     if self.current_level < (self.config['game']['levels'] - 1):
       return Level(self.config['level']).generate().with_stairs_up(self.hero).with_stairs_down()
     else:
       return Level(self.config['level']).generate().with_stairs_up(self.hero)
 
-  def descend_stairs(self): #
+  def descend_stairs(self):
     self.current_level += 1
     if len(self.levels) <= self.current_level:
       level = self.generate_next_level()
@@ -69,7 +69,7 @@ class Game:
     self.reset_hero_level()
 
 
-  def ascend_stairs(self): #
+  def ascend_stairs(self):
     self.current_level -= 1
     self.reset_hero_level()
 

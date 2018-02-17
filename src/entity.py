@@ -15,7 +15,7 @@ class Entity:
   def char(self):
     return ' '
 
-  def color(self):
+  def color(self): # pragma: no cover
     return Color.use('black')
 
   def move(self, x, y, level):
@@ -25,7 +25,7 @@ class Entity:
       self.x += x
       self.y += y
 
-  def draw(self, screen):
+  def draw(self, screen): # pragma: no cover
     return screen.addstr(self.y, self.x, self.char(), self.color())
 
   def update(self, level):
@@ -53,7 +53,7 @@ class Hero (Entity):
   def char(self):
     return '@'
 
-  def color(self):
+  def color(self): # pragma: no cover
     return Color.use('magenta')
 
   def decrement_zaps(self):
@@ -70,7 +70,7 @@ class Enemy (Entity):
   def char(self):
     return 'a'
 
-  def color(self):
+  def color(self): # pragma: no cover
     return Color.use('yellow')
 
   def in_acting_range(self, hero):
@@ -98,7 +98,7 @@ class Zap (Entity):
   def char(self):
     return '|' if self.velocity.x is 0 else '-'
 
-  def color(self):
+  def color(self): # pragma: no cover
     return Color.use('white')
 
   def set_velocity(self, x, y):

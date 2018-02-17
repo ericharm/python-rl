@@ -27,15 +27,10 @@ class Chance:
 
 class Color:
   colors = {
-      'black': 1,
-      'green': 2,
-      'blue': 3,
-      'red': 4,
-      'magenta': 5,
-      'white': 6,
-      'yellow': 7
+    'black': 1, 'green': 2, 'blue': 3, 'red': 4,
+    'magenta': 5, 'white': 6, 'yellow': 7
   }
 
   @staticmethod
-  def use(color):
+  def use(color): # pragma: no cover
     return curses.color_pair(Color.colors[color])

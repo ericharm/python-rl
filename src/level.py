@@ -13,7 +13,7 @@ class Level:
     self.width = config['width']
     self.height = config['height']
 
-  def draw(self, screen):
+  def draw(self, screen): # pragma: no cover
     for x in range(0,self.width):
       for y in range(0,self.height):
         self.tiles[x][y].draw(screen)

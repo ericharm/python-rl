@@ -17,7 +17,7 @@ class Tile:
       }
     return chars[self.type]
 
-  def color(self):
+  def color(self): # pragma: no cover
     colors = {
         'floor': 'red', 'wall': 'magenta', 'empty': 'black', 'corridor': 'blue',
         'stairs_down': 'green', 'stairs_up': 'green'
@@ -31,7 +31,7 @@ class Tile:
     walkables = ['floor', 'corridor', 'stairs_down', 'stairs_up']
     return walkables.count(self.type) > 0
 
-  def draw(self, screen):
+  def draw(self, screen): # pragma: no cover
     screen.addstr(self.y, self.x, self.char(), self.color())
     return True
 
