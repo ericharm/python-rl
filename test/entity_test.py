@@ -58,6 +58,20 @@ class EntityTest(unittest.TestCase):
   def test_hero_char(self):
     self.assertEqual('@', Hero(0, 0).char())
 
+  def test_is_colliding_with(self):
+    chuck = Entity(1, 1)
+    larry = Entity(1, 2)
+    seymour = Entity(1, 2)
+    self.assertTrue(larry.is_colliding_with(seymour))
+    self.assertFalse(chuck.is_colliding_with(larry))
+
+  def test_colliding_entities(self):
+    chuck = Entity(1, 1)
+    larry = Entity(1, 2)
+    seymour = Entity(1, 2)
+    self.assertEqual(1, len(larry.colliding_entities([chuck, larry, seymour])))
+    self.assertEqual(0, len(chuck.colliding_entities([chuck, larry, seymour])))
+
 
   # Hero
   def test_hero_initial_state_is_moving(self):

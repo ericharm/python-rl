@@ -1,24 +1,19 @@
 import os
 import sys
 import unittest
+
 sys.path.insert(0,os.path.abspath(__file__+"/../.."))
 
 from src.game import Game
 from src.player import Player
-
-class MockKeyboard:
-  def __init__(self, key):
-    self.key = key
-
-  def getkey(self):
-    return self.key
+from test.mocks.keyboard import MockKeyboard
 
 class GameTest(unittest.TestCase):
 
   def setUp(self):
     self.config = {
       'game': {
-        'levels': 5 
+        'levels': 3 
       },
       'level': {
         'width': 10,
@@ -33,17 +28,17 @@ class GameTest(unittest.TestCase):
     }
 
   def test_staircases_generate_levels(self):
-    self.config['game']['levels'] = 5
+    self.config['game']['levels'] = 3
     game = Game(self.config)
     game.update()
     for level in range(0, self.config['game']['levels']):
       game.descend_stairs()
-    self.assertEqual(5, game.current_level)
+    self.assertEqual(3, game.current_level)
     game.ascend_stairs()
-    self.assertEqual(4, game.current_level)
+    self.assertEqual(2, game.current_level)
 
   def test_handle_input(self):
-    self.config['game']['levels'] = 5
+    self.config['game']['levels'] = 3
     game = Game(self.config)
     game.hero.x = 5
     game.hero.y = 5

@@ -2,7 +2,6 @@ from level import Level
 from player import Player
 from hud import Hud
 from entity import Hero
-import curses
 import random
 
 class Game:
@@ -14,23 +13,12 @@ class Game:
     self.levels = [self.level]
     hero_start = self.level.get_random_floor_tile()
     self.hero = Hero(hero_start.x, hero_start.y)
+    self.player = Player(self)
     self.level.entities.append(self.hero)
 
-  def run(self, screen): # pragma: no cover
-    self.create_windows(self.config['windows'])
-    self.player = Player(self)
-    playing = True
-    while (playing != False):
-      self.draw()
-      playing = self.handle_input(screen)
-      self.update()
-
-  def draw(self): # pragma: no cover
-    self.level.draw(self.window)
-    self.hud.draw(self.hero.inventory)
-    window_config = self.config['windows']['game']
-    self.window.refresh(0, 0, window_config['y'], window_config['x'],
-                        curses.LINES - 1, curses.COLS - 1)
+  def draw(self, window, hud): # pragma: no cover
+    self.level.draw(window)
+    hud.draw(self.hero.inventory)
 
   def handle_input(self, keyboard):
       try:
@@ -44,14 +32,6 @@ class Game:
     self.level.update()
 
   # private
-
-  def create_windows(self, window_configs): # pragma: no cover
-    game_win_setup = window_configs['game']
-    hud_win_setup = window_configs['hud']
-    self.window = curses.newpad(game_win_setup['height'], game_win_setup['width'])
-    hud_pad = curses.newpad(hud_win_setup['height'], hud_win_setup['width'])
-    self.hud = Hud(hud_pad, self.config['windows']['hud'])
-
   def generate_first_level(self):
     return Level(self.config['level']).generate().with_stairs_down()
 

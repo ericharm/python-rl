@@ -1,5 +1,6 @@
 from tile import Tile
 from entity import Enemy
+from collision_controller import CollisionController
 import random
 
 class Level:
@@ -10,6 +11,7 @@ class Level:
     self.entities = []
     self.plucked = []
     self.rooms = []
+    self.collision_controller = CollisionController()
     self.width = config['width']
     self.height = config['height']
 
@@ -23,6 +25,10 @@ class Level:
   def update(self):
     for entity in reversed(self.entities):
       entity.update(self)
+    self.collision_controller.handle_collisions(self.entities)
+    for entity in reversed(self.entities):
+      if ('slated-for-removal' in entity.categories):
+        self.entities.remove(entity)
 
   def generate(self):
     self.create_empty_tiles()
@@ -44,7 +50,6 @@ class Level:
     return self
 
   # private
-
   def insert_enemies(self):
     enemies = 0
     while enemies < 3:

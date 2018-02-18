@@ -1,6 +1,6 @@
 import curses
 import yaml
-from src.game import Game
+from src.application import Application
 
 with open("config/config.yml", 'r') as stream:
   try:
@@ -9,8 +9,8 @@ with open("config/config.yml", 'r') as stream:
     print(exc)
 
 def main(stdscr):
-  game = Game(config)
-  game.run(stdscr)
+  application = Application(config)
+  application.run(stdscr)
 
 def init_curses():
   curses.initscr()
