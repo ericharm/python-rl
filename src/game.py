@@ -23,10 +23,9 @@ class Game:
   def handle_input(self, keyboard):
       try:
         key_in = keyboard.getkey()
-      except: # pragma: no cover
+      except:
         key_in = "0"
       return self.player.handle_input(key_in)
-
 
   def update(self):
     self.level.update()
@@ -47,7 +46,6 @@ class Game:
       level = self.generate_next_level()
       self.levels.append(level)
     self.reset_hero_level()
-
 
   def ascend_stairs(self):
     self.current_level -= 1

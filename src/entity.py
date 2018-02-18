@@ -7,7 +7,7 @@ class Entity:
     self.x = x
     self.y = y
     self.inventory = []
-    self.categories = []
+    self.categories = ['entity']
 
   def char(self):
     return ' '
@@ -48,7 +48,7 @@ class Hero (Entity):
     self.is_hero = True
     self.state = 'moving'
     self.zaps = 2
-    self.categories = ['hero', 'shootable']
+    self.categories.extend(['hero', 'shootable'])
     self.inventory = [{'name': 'Health', 'quantity': 3},
                       {'name': 'Rocks',  'quantity': 8},
                       {'name': 'Zapgun Charges', 'quantity': 2}]
@@ -73,7 +73,7 @@ class Enemy (Entity):
   def __init__(self, x, y):
     Entity.__init__(self, x, y)
     self.acting_range = 10
-    self.categories = ['enemy', 'shootable']
+    self.categories.extend(['enemy', 'shootable'])
 
   def char(self):
     return 'a'
@@ -101,7 +101,7 @@ class Zap (Entity):
   def __init__(self, x, y):
     Entity.__init__(self, x, y)
     self.velocity = Vector(x, y)
-    categories = ['zap']
+    self.categories.extend(['zap'])
 
   def char(self):
     return '|' if self.velocity.x is 0 else '-'

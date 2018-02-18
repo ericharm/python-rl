@@ -21,7 +21,7 @@ class CollisionController:
         entity.categories.append('slated-for-removal')
 
 
-class CollidingPair(list):
+class CollidingPair (list):
 
   def __init__(self, entity_a, entity_b):
     list.__init__(self)
