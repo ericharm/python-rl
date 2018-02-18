@@ -11,7 +11,7 @@ class Level:
     self.entities = []
     self.plucked = []
     self.rooms = []
-    self.collision_controller = CollisionController()
+    self.collision_controller = CollisionController(self)
     self.width = config['width']
     self.height = config['height']
 
@@ -26,9 +26,9 @@ class Level:
     for entity in reversed(self.entities):
       entity.update(self)
     self.collision_controller.handle_collisions(self.entities)
-    for entity in reversed(self.entities):
-      if ('slated-for-removal' in entity.categories):
-        self.entities.remove(entity)
+    #  for entity in reversed(self.entities):
+      #  if ('slated-for-removal' in entity.categories):
+        #  self.entities.remove(entity)
 
   def generate(self):
     self.create_empty_tiles()

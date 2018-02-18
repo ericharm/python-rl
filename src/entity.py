@@ -37,8 +37,8 @@ class Entity:
   def is_colliding_with(self, entity):
     return entity.x is self.x and entity.y is self.y and entity is not self
 
-  def pluck(self):
-    self.categories.append('slated-for-removal')
+  def pluck(self, level):
+    level.entities.remove(self)
 
 
 class Hero (Entity):
@@ -111,6 +111,7 @@ class Zap (Entity):
 
   def set_velocity(self, x, y):
     self.velocity = Vector(x, y)
+    return self
 
   def update(self, level):
     destination = Vector(self.x + self.velocity.x, self.y + self.velocity.y)

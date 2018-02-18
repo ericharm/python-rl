@@ -1,5 +1,8 @@
 class CollisionController:
 
+  def __init__(self, level):
+    self.level = level
+
   def handle_collisions(self, entities):
     pairs = self.get_colliding_pairs(entities)
     for pair in pairs:
@@ -18,7 +21,7 @@ class CollisionController:
   def dispatch_collision_actions(self, pair):
     if pair.has_control_categories('zap', 'shootable'):
       for entity in pair:
-        entity.categories.append('slated-for-removal')
+        entity.pluck(self.level)
 
 
 class CollidingPair (list):
