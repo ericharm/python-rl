@@ -1,7 +1,7 @@
 from entity import Zap
 from util import Vector
 
-class Player:
+class GameInputController:
 
   def __init__(self, game):
     self.game = game
