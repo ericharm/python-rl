@@ -1,6 +1,5 @@
 from game import Game
 from title import Title
-from hud import Hud
 import curses
 
 class Application: # pragma: no cover
