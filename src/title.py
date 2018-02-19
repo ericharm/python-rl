@@ -11,10 +11,11 @@ class Title:
 
   def draw(self, window, hud): # pragma: no cover
     window.clear()
-    line = 8
-    window.addstr(line + self.current_option, 6, '#', Color.use('blue'))
+    line = 10
+    window.addstr(line - 2, 20, 'SPACE JAIL', Color.use('red'))
+    window.addstr(line + self.current_option, 20, '#', Color.use('blue'))
     for option in self.options:
-      window.addstr(line, 8, option.capitalize(), Color.use('white'))
+      window.addstr(line, 22, option.capitalize(), Color.use('white'))
       line += 1
 
   def handle_input(self, key):

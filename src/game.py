@@ -1,6 +1,7 @@
 from level import Level
 from game_input_controller import GameInputController
 from entity import Hero
+from hud import Hud
 import random
 
 class Game:
@@ -13,11 +14,12 @@ class Game:
     hero_start = self.level.get_random_floor_tile()
     self.hero = Hero(hero_start.x, hero_start.y)
     self.player = GameInputController(self)
+    self.hud = Hud(self.config['windows']['footer'])
     self.level.entities.append(self.hero)
 
-  def draw(self, window, hud): # pragma: no cover
+  def draw(self, window, footer): # pragma: no cover
     self.level.draw(window)
-    hud.draw(self.hero.inventory)
+    self.hud.draw(footer, self.hero.inventory)
 
   def handle_input(self, key):
     return self.player.handle_input(key)

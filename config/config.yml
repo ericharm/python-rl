@@ -14,14 +14,19 @@ level:
     dead_end_removals: 20
 
 windows:
-  game:
+  head:
     x: 0
     y: 0
     width: 81
-    height: 31
-  hud:
+    height: 3
+  body:
     x: 0
-    y: 33
+    y: 3
+    width: 81
+    height: 31
+  footer:
+    x: 0
+    y: 34
     width: 81
     height: 6
 

@@ -25,6 +25,12 @@ class GameTest(unittest.TestCase):
           'generation_attempts': 10
         },
         'corridors': { 'dead_end_removals': 0 }
+      },
+      'windows': {
+        'footer': {
+          'width': 10,
+          'height': 5
+        }
       }
     }
 

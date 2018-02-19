@@ -20,9 +20,12 @@ class Application: # pragma: no cover
 
   def draw(self):
     for state in self.states:
-      state.draw(self.window, self.hud)
-      window_config = self.config['windows']['game']
-      self.window.refresh(0, 0, window_config['y'], window_config['x'],
+      state.draw(self.main_window, self.footer_window)
+      window_config = self.config['windows']['body']
+      footer_config = self.config['windows']['footer']
+      self.main_window.refresh(0, 0, window_config['y'], window_config['x'],
+          curses.LINES - 1, curses.COLS - 1)
+      self.footer_window.refresh(0, 0, footer_config['y'], footer_config['x'],
           curses.LINES - 1, curses.COLS - 1)
 
   def handle_input(self, keyboard):
@@ -33,11 +36,10 @@ class Application: # pragma: no cover
     return self.states[-1].handle_input(key_in)
 
   def create_windows(self, window_configs):
-    game_win_setup = window_configs['game']
-    hud_win_setup = window_configs['hud']
-    self.window = curses.newpad(game_win_setup['height'], game_win_setup['width'])
-    hud_pad = curses.newpad(hud_win_setup['height'], hud_win_setup['width'])
-    self.hud = Hud(hud_pad, self.config['windows']['hud'])
+    body_setup = window_configs['body']
+    footer_setup = window_configs['footer']
+    self.main_window = curses.newpad(body_setup['height'], body_setup['width'])
+    self.footer_window = curses.newpad(footer_setup['height'], footer_setup['width'])
 
   def set_title_screen(self):
     title = Title(self.config, self.states)
