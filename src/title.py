@@ -9,7 +9,8 @@ class Title:
     self.options = ['start', 'exit']
     self.current_option = 0
 
-  def draw(self, head, body, footer): # pragma: no cover
+  def draw(self, windows): # pragma: no cover
+    body = windows['body']
     body.clear()
     line = 10
     body.addstr(line - 2, 20, 'SPACE JAIL', Color.use('red'))

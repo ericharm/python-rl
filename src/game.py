@@ -19,10 +19,10 @@ class Game:
     self.hud = Hud(self.config['windows']['footer'])
     self.level.entities.append(self.hero)
 
-  def draw(self, head, body, footer): # pragma: no cover
-    self.display_heading(head)
-    self.level.draw(body)
-    self.hud.draw(footer, self.hero.inventory)
+  def draw(self, windows): # pragma: no cover
+    self.display_heading(windows['head'])
+    self.level.draw(windows['body'])
+    self.hud.draw(windows['footer'], self.hero.inventory)
 
   def handle_input(self, key):
     return self.player.handle_input(key)
@@ -30,7 +30,7 @@ class Game:
   def update(self):
     self.level.update()
 
-  def display_heading(self, window):
+  def display_heading(self, window): # pragma: no cover
     window.clear()
     window.border('|', '|', '-', '-',
         curses.ACS_ULCORNER, curses.ACS_URCORNER, curses.ACS_LLCORNER, curses.ACS_LRCORNER)

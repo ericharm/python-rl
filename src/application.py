@@ -21,7 +21,7 @@ class Application: # pragma: no cover
 
   def draw(self):
     for state in self.states:
-      state.draw(self.windows['head'], self.windows['body'], self.windows['footer'])
+      state.draw(self.windows)
       window_configs = self.config['windows']
       for window in window_configs:
         window_setup = window_configs[window]
