@@ -6,12 +6,11 @@ class Application: # pragma: no cover
 
   def __init__(self, config):
     self.config = config
-    self.create_windows(self.config['windows'])
-    game = Game(self.config)
-    self.states = [game]
+    self.states = []
 
   def run(self, screen):
-    self.game = Game(self.config)
+    self.create_windows(self.config['windows'])
+    self.create_game()
     playing = True
     while (playing != False):
       self.draw()
@@ -24,6 +23,10 @@ class Application: # pragma: no cover
     self.window = curses.newpad(game_win_setup['height'], game_win_setup['width'])
     hud_pad = curses.newpad(hud_win_setup['height'], hud_win_setup['width'])
     self.hud = Hud(hud_pad, self.config['windows']['hud'])
+
+  def create_game(self):
+    game = Game(self.config)
+    self.states.append(game)
 
   def draw(self):
     self.states[-1].draw(self.window, self.hud)

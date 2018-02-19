@@ -4,6 +4,7 @@ import unittest
 
 sys.path.insert(0,os.path.abspath(__file__+"/../.."))
 
+from src.application import Application
 from src.game import Game
 from src.player import Player
 from src.entity import Zap
@@ -27,6 +28,10 @@ class GameTest(unittest.TestCase):
         'corridors': { 'dead_end_removals': 0 }
       }
     }
+
+  def test_application(self):
+    app = Application(self.config)
+    self.assertEqual([], app.states)
 
   def test_staircases_generate_levels(self):
     self.config['game']['levels'] = 3

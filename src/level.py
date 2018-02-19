@@ -26,9 +26,6 @@ class Level:
     for entity in reversed(self.entities):
       entity.update(self)
     self.collision_controller.handle_collisions(self.entities)
-    #  for entity in reversed(self.entities):
-      #  if ('slated-for-removal' in entity.categories):
-        #  self.entities.remove(entity)
 
   def generate(self):
     self.create_empty_tiles()
@@ -88,8 +85,6 @@ class Level:
         current_tile = neighbor
         tree.append(current_tile)
       else:
-        if current_tile.type is "empty":
-          current_tile.type = "corridor"
         current_tile = tree.pop()
 
   def connect_neighbors_as_corridor(self, source_tile, target_tile):
@@ -123,15 +118,6 @@ class Level:
       for column in range (room.x, room.x + room.width):
         for row in range (room.y, room.y + room.height):
           self.tiles[column][row].set_type('floor')
-
-  def insert_walls(self, room):
-    x = room.x - 1
-    y = room.y - 1
-    width = room.width + 2
-    height = room.height + 2
-    for column in range (x, x + width):
-      for row in range (y, y + height):
-        self.tiles[column][row].set_type('wall')
 
   def get_random_floor_tile(self):
     random_tile = self.get_random_tile()
