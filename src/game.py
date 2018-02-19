@@ -35,12 +35,12 @@ class Game:
     title = 'Level ' + str(self.current_level)
     window.addstr(1, 10, title, Color.use('yellow'))
 
-  def draw_hud(self, window):
+  def draw_hud(self, window): #pragma: no cover
     window.border('|', '|', '-', '-',
         curses.ACS_ULCORNER, curses.ACS_URCORNER, curses.ACS_LLCORNER, curses.ACS_LRCORNER)
     self.print_inventory(window, self.hero.inventory)
 
-  def print_inventory(self, window,inv):
+  def print_inventory(self, window,inv): #pragma: no cover
     for i in range(0, len(inv)):
       name_x = 1 if i % 2 is 0 else 40
       name_y = (i / 2) + 1

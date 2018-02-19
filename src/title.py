@@ -39,3 +39,4 @@ class Title:
       self.state_stack.append(Game(self.config,self.state_stack))
     if (self.options[self.current_option] == 'exit'):
       return False
+

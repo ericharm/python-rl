@@ -11,7 +11,7 @@ class Application: # pragma: no cover
 
   def run(self, screen):
     self.create_windows(self.config['windows'])
-    self.set_title_screen()
+    self.init_title_screen()
     playing = True
     while (playing != False):
       self.draw()
@@ -21,11 +21,7 @@ class Application: # pragma: no cover
   def draw(self):
     for state in self.states:
       state.draw(self.windows)
-      window_configs = self.config['windows']
-      for window in window_configs:
-        window_setup = window_configs[window]
-        self.windows[window].refresh(0, 0, window_setup['y'], window_setup['x'],
-          curses.LINES - 1, curses.COLS - 1)
+    self.refresh_windows()
 
   def handle_input(self, keyboard):
     try:
@@ -39,7 +35,14 @@ class Application: # pragma: no cover
       window_setup = window_configs[window]
       self.windows[window] = curses.newpad(window_setup['height'], window_setup['width'])
 
-  def set_title_screen(self):
+  def refresh_windows(self):
+    window_configs = self.config['windows']
+    for window in window_configs:
+      window_setup = window_configs[window]
+      self.windows[window].refresh(0, 0, window_setup['y'], window_setup['x'],
+        curses.LINES - 1, curses.COLS - 1)
+
+  def init_title_screen(self):
     title = Title(self.config, self.states)
     self.states.append(title)
 
