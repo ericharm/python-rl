@@ -9,13 +9,13 @@ class Title:
     self.options = ['start', 'exit']
     self.current_option = 0
 
-  def draw(self, window, hud): # pragma: no cover
-    window.clear()
+  def draw(self, head, body, footer): # pragma: no cover
+    body.clear()
     line = 10
-    window.addstr(line - 2, 20, 'SPACE JAIL', Color.use('red'))
-    window.addstr(line + self.current_option, 20, '#', Color.use('blue'))
+    body.addstr(line - 2, 20, 'SPACE JAIL', Color.use('red'))
+    body.addstr(line + self.current_option, 20, '#', Color.use('blue'))
     for option in self.options:
-      window.addstr(line, 22, option.capitalize(), Color.use('white'))
+      body.addstr(line, 22, option.capitalize(), Color.use('white'))
       line += 1
 
   def handle_input(self, key):

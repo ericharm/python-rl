@@ -1,7 +1,9 @@
 from level import Level
 from game_input_controller import GameInputController
 from entity import Hero
+from util import Color
 from hud import Hud
+import curses
 import random
 
 class Game:
@@ -17,8 +19,9 @@ class Game:
     self.hud = Hud(self.config['windows']['footer'])
     self.level.entities.append(self.hero)
 
-  def draw(self, window, footer): # pragma: no cover
-    self.level.draw(window)
+  def draw(self, head, body, footer): # pragma: no cover
+    self.display_heading(head)
+    self.level.draw(body)
     self.hud.draw(footer, self.hero.inventory)
 
   def handle_input(self, key):
@@ -26,6 +29,13 @@ class Game:
 
   def update(self):
     self.level.update()
+
+  def display_heading(self, window):
+    window.clear()
+    window.border('|', '|', '-', '-',
+        curses.ACS_ULCORNER, curses.ACS_URCORNER, curses.ACS_LLCORNER, curses.ACS_LRCORNER)
+    title = 'Level ' + str(self.current_level)
+    window.addstr(1, 10, title, Color.use('yellow'))
 
   def generate_first_level(self):
     return Level(self.config['level']).generate().with_stairs_down()

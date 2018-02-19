@@ -11,7 +11,6 @@ class Hud:
     window.border('|', '|', '-', '-',
         curses.ACS_ULCORNER, curses.ACS_URCORNER, curses.ACS_LLCORNER, curses.ACS_LRCORNER)
     self.print_items(window, inventory)
-    #  window.refresh(0, 0, self.config['y'], self.config['x'], curses.LINES - 1, curses.COLS - 1)
 
   def print_items(self, window, inv):
     for i in range(0, len(inv)):
