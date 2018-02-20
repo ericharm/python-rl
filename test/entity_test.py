@@ -17,6 +17,8 @@ class EntityTest(unittest.TestCase):
     for x in range(0, level.width):
       for y in range(0, level.height):
         level.tiles[x][y].set_type('floor')
+    for column in level.tiles:
+      level.flattened_tiles.extend(column)
     return level
 
   # Entity
@@ -97,16 +99,6 @@ class EntityTest(unittest.TestCase):
 
   def test_enemy_char(self):
     self.assertEqual('a', Enemy(0, 0).char())
-
-  def test_update_enemy_only_sometimes_moves(self):
-    enemy_location = Vector(5, 5)
-    hero_location = Vector(1, 5)
-    enemy_positions = map(lambda attempt: self.update_new_enemy(enemy_location, hero_location), range(0, 10))
-    moved_enemies = filter(lambda position: position == (4, 5), enemy_positions)
-    unmoved_enemies = filter(lambda position: position == (5, 5), enemy_positions)
-    self.assertGreater(len(moved_enemies), 0)
-    self.assertGreater(len(unmoved_enemies), 0)
-    self.assertEqual(10, len(moved_enemies) + len(unmoved_enemies))
 
   # Zaps
   def test_handle_entity_collisions(self):
