@@ -1,5 +1,4 @@
 from util import *
-import time
 from pather import Pather
 import curses
 
@@ -95,7 +94,7 @@ class Enemy (Entity):
     if len(path) > 1:
       self.x = path[1][0]
       self.y = path[1][1]
-        
+
   def update(self, level):
     hero = reduce((lambda a, b: a if 'hero' in a.categories else b), level.entities)
     if self.in_acting_range(hero):

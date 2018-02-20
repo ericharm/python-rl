@@ -1,4 +1,3 @@
-from Queue import Queue
 import math
 import random
 import curses
