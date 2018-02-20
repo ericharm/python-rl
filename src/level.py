@@ -14,6 +14,7 @@ class Level:
     self.collision_controller = CollisionController(self)
     self.width = config['width']
     self.height = config['height']
+    self.flattened_tiles = []
 
   def draw(self, screen): # pragma: no cover
     for x in range(0,self.width):
@@ -35,6 +36,8 @@ class Level:
     for times in range(0, 20):
       self.remove_dead_ends()
     self.insert_enemies()
+    for column in self.tiles:
+      self.flattened_tiles.extend(column)
     return self
 
   def with_stairs_up(self, hero):
@@ -78,7 +81,7 @@ class Level:
     # build a corridor using recursive maze generation algorithm
     current_tile = source_tile
     while len(tree) > 0:
-      neighbors = current_tile.get_neighbors(tiles)
+      neighbors = current_tile.get_empty_at_distance_two(tiles)
       if len(neighbors) > 0:
         neighbor = neighbors[random.randint(0, len(neighbors)) - 1]
         self.connect_neighbors_as_corridor(current_tile, neighbor)

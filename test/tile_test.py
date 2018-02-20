@@ -41,13 +41,13 @@ class TileTest(unittest.TestCase):
     self.assertTrue(odd_tile.odd())
     self.assertFalse(mixed_tile.odd())
 
-  def test_get_neighbors(self):
+  def test_get_empty_at_distance_two(self):
     empty_west = Tile(0, 3)
     empty_north = Tile(2, 1)
     floor_east = Tile(4, 3)
     floor_east.set_type("floor")
     tiles_to_check = [empty_west, empty_north, floor_east]
-    self.assertEqual(self.tile.get_neighbors(tiles_to_check), [empty_west, empty_north])
+    self.assertEqual(self.tile.get_empty_at_distance_two(tiles_to_check), [empty_west, empty_north])
 
   def test_at_distance(self):
     horizontally_aligned_tile = Tile(10, 3)

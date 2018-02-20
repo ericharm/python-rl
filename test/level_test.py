@@ -4,6 +4,7 @@ import unittest
 sys.path.insert(0,os.path.abspath(__file__+"/../.."))
 
 from src.level import *
+from test.fixtures import Fixtures
 
 class LevelTest(unittest.TestCase):
 
@@ -16,14 +17,7 @@ class LevelTest(unittest.TestCase):
     return len(floor_tiles)
 
   def setUp(self):
-    self.config = {
-      'width': 40,
-      'height': 20,
-      'rooms': {
-        'min_width': 3, 'min_height': 3, 'max_width': 11, 'max_height': 5,
-        'generation_attempts': 10
-      },
-    }
+    self.config = Fixtures.level_config
     self.level = Level(self.config)
     self.level.create_empty_tiles()
 

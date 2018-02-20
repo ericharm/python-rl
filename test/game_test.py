@@ -8,31 +8,12 @@ from src.application import Application
 from src.game import Game
 from src.game_input_controller import GameInputController
 from src.entity import Zap
+from test.fixtures import Fixtures
 
 class GameTest(unittest.TestCase):
 
   def setUp(self):
-    self.config = {
-      'game': {
-        'levels': 3 
-      },
-      'level': {
-        'width': 10,
-        'height': 10,
-        'rooms': {
-          'min_width': 3, 'min_height': 3,
-          'max_width': 3, 'max_height': 3,
-          'generation_attempts': 10
-        },
-        'corridors': { 'dead_end_removals': 0 }
-      },
-      'windows': {
-        'footer': {
-          'width': 10,
-          'height': 5
-        }
-      }
-    }
+    self.config = Fixtures.game_config
 
   def test_application(self):
     app = Application(self.config)

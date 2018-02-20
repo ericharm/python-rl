@@ -38,9 +38,10 @@ class Application: # pragma: no cover
   def refresh_windows(self):
     window_configs = self.config['windows']
     for window in window_configs:
-      window_setup = window_configs[window]
-      self.windows[window].refresh(0, 0, window_setup['y'], window_setup['x'],
-        curses.LINES - 1, curses.COLS - 1)
+      if window is not 'body':
+        window_setup = window_configs[window]
+        self.windows[window].refresh(0, 0, window_setup['y'], window_setup['x'],
+          curses.LINES - 1, curses.COLS - 1)
 
   def init_title_screen(self):
     title = Title(self.config, self.states)

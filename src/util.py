@@ -1,3 +1,4 @@
+from Queue import Queue
 import math
 import random
 import curses
@@ -16,7 +17,7 @@ class Vector:
     self.x = coords[0]
     self.y = coords[1]
     return self
-    
+
 
 class Chance:
 
@@ -34,3 +35,4 @@ class Color:
   @staticmethod
   def use(color): # pragma: no cover
     return curses.color_pair(Color.colors[color])
+

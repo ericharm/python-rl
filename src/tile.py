@@ -29,7 +29,7 @@ class Tile:
 
   def walkable(self):
     walkables = ['floor', 'corridor', 'stairs_down', 'stairs_up']
-    return walkables.count(self.type) > 0
+    return self.type in walkables
 
   def draw(self, screen): # pragma: no cover
     screen.addstr(self.y, self.x, self.char(), self.color())
@@ -41,7 +41,11 @@ class Tile:
   def empty(self):
     return self.type is 'empty'
 
-  def get_neighbors(self, tiles):
+  def get_walkable_neighbors(self, tiles):
+    neighbors = filter(lambda tile: tile.at_distance(1, self), tiles)
+    return filter(lambda tile: tile.walkable(), neighbors)
+
+  def get_empty_at_distance_two(self, tiles):
     tiles_at_distance_two = list(filter(lambda tile: tile.at_distance(2, self), tiles))
     empty_at_distance_two = list(filter(lambda tile: tile.empty(), tiles_at_distance_two))
     return empty_at_distance_two

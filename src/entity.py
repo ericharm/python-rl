@@ -1,4 +1,6 @@
 from util import *
+import time
+from pather import Pather
 import curses
 
 class Entity:
@@ -85,14 +87,18 @@ class Enemy (Entity):
     return True if self.distance_from_entity(hero) <= self.acting_range else False
 
   def move(self, hero, level):
-    line_to_hero = Vector(hero.x - self.x, hero.y - self.y)
-    movement = (Vector(line_to_hero.x, 0) if abs(line_to_hero.x) > abs(line_to_hero.y)
-    else Vector(0, line_to_hero.y)).to_binary()
-    Entity.move(self, movement.x, movement.y, level)
-
+    tiles = level.flattened_tiles
+    my_tile = reduce(lambda a, b: a if a.x is self.x and a.y is self.y else b, tiles)
+    hero_tile = reduce(lambda a, b: a if a.x is hero.x and a.y is hero.y else b, tiles)
+    pather = Pather(my_tile, level)
+    path = pather.get_path(hero_tile)
+    if len(path) > 1:
+      self.x = path[1][0]
+      self.y = path[1][1]
+        
   def update(self, level):
     hero = reduce((lambda a, b: a if 'hero' in a.categories else b), level.entities)
-    if self.in_acting_range(hero) and Chance.flip_coin():
+    if self.in_acting_range(hero):
       self.move(hero, level)
 
 
