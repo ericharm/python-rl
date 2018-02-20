@@ -17,6 +17,8 @@ class Vector:
     self.y = coords[1]
     return self
 
+  def in_level(self, level):
+    return self.x < level.width and self.y < level.height
 
 class Chance:
 

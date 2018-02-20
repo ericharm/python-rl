@@ -21,7 +21,7 @@ class Pather:
         if tile not in self.paths:
           self.frontier.put(tile)
           path = list(self.paths[current])
-          path.append((current.x, current.y))
+          path.append((tile.x, tile.y))
           if len(path) > 15:
             return []
           self.paths[tile] = path

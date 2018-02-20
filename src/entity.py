@@ -91,9 +91,9 @@ class Enemy (Entity):
     hero_tile = reduce(lambda a, b: a if a.x is hero.x and a.y is hero.y else b, tiles)
     pather = Pather(my_tile, level)
     path = pather.get_path(hero_tile)
-    if len(path) > 1:
-      self.x = path[1][0]
-      self.y = path[1][1]
+    if len(path) > 0:
+      self.x = path[0][0]
+      self.y = path[0][1]
 
   def update(self, level):
     hero = reduce((lambda a, b: a if 'hero' in a.categories else b), level.entities)
@@ -120,7 +120,7 @@ class Zap (Entity):
 
   def update(self, level):
     destination = Vector(self.x + self.velocity.x, self.y + self.velocity.y)
-    if (level.tiles[destination.x][destination.y].walkable()):
+    if destination.in_level(level) and level.tiles[destination.x][destination.y].walkable():
       self.move(self.velocity.x, self.velocity.y, level)
     else:
       level.entities.remove(self)
