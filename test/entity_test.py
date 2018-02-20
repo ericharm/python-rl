@@ -100,6 +100,21 @@ class EntityTest(unittest.TestCase):
   def test_enemy_char(self):
     self.assertEqual('a', Enemy(0, 0).char())
 
+  def test_enemy_finds_path_to_hero(self):
+    level = self.setup_level()
+    enemy = Enemy(1, 0)
+    hero = Hero(5, 0)
+    enemy.move(hero, level)
+    self.assertEqual((2, 0), (enemy.x, enemy.y))
+
+  def test_enemy_tries_only_paths_of_reasonable_distance(self):
+    level = self.setup_level()
+    enemy = Enemy(1, 0)
+    hero = Hero(34, 0)
+    level.entities = [hero, enemy]
+    enemy.move(hero, level)
+    self.assertEqual((1, 0), (enemy.x, enemy.y))
+
   # Zaps
   def test_handle_entity_collisions(self):
     level = self.setup_level()

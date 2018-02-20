@@ -26,7 +26,8 @@ class Game:
     return self.player.handle_input(key)
 
   def update(self):
-    self.level.update()
+    if self.hero.state is 'moving':
+      self.level.update()
 
   def display_heading(self, window): # pragma: no cover
     window.clear()
