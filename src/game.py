@@ -47,8 +47,8 @@ class Game:
       name_y = (i / 2) + 1
       q_x = 20 if name_x is 1 else 61
       q_y = name_y
-      window.addstr(name_y, name_x, inv[i]["name"], Color.use('white'))
-      window.addstr(q_y, q_x, str(inv[i]["quantity"]), Color.use('white'))
+      window.addstr(name_y, name_x, inv[i]['name'], Color.use('white'))
+      window.addstr(q_y, q_x, str(inv[i]['quantity']), Color.use('white'))
 
   def generate_first_level(self):
     return Level(self.config['level']).generate().with_stairs_down()

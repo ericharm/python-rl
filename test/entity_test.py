@@ -77,9 +77,9 @@ class EntityTest(unittest.TestCase):
   def test_decrement_hero_zaps(self):
     hero = Hero(0, 0)
     zaps = reduce(lambda a, b: a if a['name'] is 'Zapgun Charges' else b, hero.inventory)
-    self.assertEqual(2, zaps['quantity'])
+    quantity = zaps['quantity']
     hero.decrement_zaps()
-    self.assertEqual(1, zaps['quantity'])
+    self.assertEqual(quantity - 1, zaps['quantity'])
 
   # Enemy
   def update_new_enemy(self, enemy, hero):
@@ -120,11 +120,11 @@ class EntityTest(unittest.TestCase):
     level = self.setup_level()
     enemy = Enemy(6, 5)
     zap = Zap(5, 5)
+    zap.set_velocity(0, 0)
     level.entities = [zap, enemy]
-    zap.set_velocity(1, 0)
+    enemy.x -= 1
     level.update()
-    self.assertEqual((6, 5), (zap.x, zap.y))
-    self.assertEqual('-', zap.char())
+    self.assertEqual((5, 5), (zap.x, zap.y))
     self.assertEqual(0, len(level.entities))
 
   def test_zap_hits_a_wall(self):

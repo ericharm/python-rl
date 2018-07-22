@@ -19,10 +19,13 @@ class Entity:
   def move(self, x, y, level):
     dest_vec = Vector(self.x + x, self.y + y)
     destination = level.tiles[dest_vec.x][dest_vec.y]
-    if (destination.x < level.width and destination.y < level.height
-    and destination.walkable()) and not level.tile_occupied(destination):
+    if (destination.x < (level.width - 1) and destination.y < (level.height - 1)
+    and destination.walkable()):
       self.x += x
       self.y += y
+      if len(self.colliding_entities(level.entities)) is not 0:
+        self.x -= x
+        self.y -= y
 
   def draw(self, screen): # pragma: no cover
     return screen.addstr(self.y, self.x, self.char(), self.color())
@@ -49,11 +52,11 @@ class Hero (Entity):
     Entity.__init__(self, x, y)
     self.is_hero = True
     self.state = 'moving'
-    self.zaps = 2
+    #  self.zaps = 12
     self.categories.extend(['hero', 'shootable'])
     self.inventory = [{'name': 'Health', 'quantity': 3},
                       {'name': 'Rocks',  'quantity': 8},
-                      {'name': 'Zapgun Charges', 'quantity': 2}]
+                      {'name': 'Zapgun Charges', 'quantity': 12}]
 
   def set_state(self, state):
     self.state = state
