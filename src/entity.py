@@ -17,9 +17,10 @@ class Entity:
     return Color.use('black')
 
   def move(self, x, y, level):
-    destination = Vector(self.x + x, self.y + y)
+    dest_vec = Vector(self.x + x, self.y + y)
+    destination = level.tiles[dest_vec.x][dest_vec.y]
     if (destination.x < level.width and destination.y < level.height
-    and level.tiles[destination.x][destination.y].walkable()):
+    and destination.walkable()) and not level.tile_occupied(destination):
       self.x += x
       self.y += y
 
@@ -64,9 +65,15 @@ class Hero (Entity):
   def color(self): # pragma: no cover
     return Color.use('magenta')
 
+  def set_aiming(self):
+    if self.get_zaps()['quantity'] > 0:
+      self.set_state('aiming')
+
   def decrement_zaps(self):
-    zaps = reduce(lambda a, b: a if a['name'] is 'Zapgun Charges' else b, self.inventory)
-    zaps['quantity'] -= 1
+    self.get_zaps()['quantity'] -= 1
+
+  def get_zaps(self):
+    return reduce(lambda a, b: a if a['name'] is 'Zapgun Charges' else b, self.inventory)
 
 
 class Enemy (Entity):

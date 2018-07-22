@@ -1,6 +1,6 @@
 # SPACE JAIL
 
-This is intended to be a space-themed roguelike written in Python
+A simple roguelike featuring procedural level generation, player inventory, path finding
 
 ## Up and running
 - `git clone https://github.com/ericharm/space-jail.git`
@@ -13,6 +13,4 @@ This is intended to be a space-themed roguelike written in Python
 - `pytest test/`
 
 ### Coverage
-- pytest --cov=src test
-- coverage html
-- open htmlcov/index.html
+- `pytest --cov=src test`

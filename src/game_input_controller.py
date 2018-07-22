@@ -31,7 +31,7 @@ class GameInputController:
     elif (key is "<" and tiles[x][y].type is "stairs_up"):
       self.game.ascend_stairs()
     elif (key is " "):
-        self.hero.set_state("aiming")
+        self.hero.set_aiming()
     elif (key is "q"):
       return False
 
