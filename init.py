@@ -1,11 +1,11 @@
 import curses
-import yaml
+from yaml import load, CLoader, YAMLError
 from src.application import Application
 
 with open("config/config.yml", 'r') as stream:
   try:
-    config = yaml.load(stream)
-  except yaml.YAMLError as exc:
+    config = load(stream, CLoader)
+  except YAMLError as exc:
     print(exc)
 
 def main(stdscr):
@@ -23,7 +23,6 @@ def init_curses():
   curses.init_pair(5, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
   curses.init_pair(6, curses.COLOR_WHITE, curses.COLOR_BLACK)
   curses.init_pair(7, curses.COLOR_YELLOW, curses.COLOR_BLACK)
-
   curses.noecho()
   curses.cbreak()
 

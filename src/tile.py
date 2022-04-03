@@ -1,4 +1,4 @@
-from util import Color
+from src.util import Color
 
 class Tile:
 

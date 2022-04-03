@@ -1,6 +1,6 @@
-from util import *
-from pather import Pather
-import curses
+from src.util import *
+from src.pather import Pather
+from functools import reduce
 
 class Entity:
 
@@ -23,7 +23,7 @@ class Entity:
     and destination.walkable()):
       self.x += x
       self.y += y
-      if len(self.colliding_entities(level.entities)) is not 0:
+      if len(self.colliding_entities(level.entities)) != 0:
         self.x -= x
         self.y -= y
 
@@ -37,10 +37,10 @@ class Entity:
     return Vector(entity.x - self.x, entity.y - self.y).length()
 
   def colliding_entities(self, entities):
-    return filter(lambda entity: self.is_colliding_with(entity), entities)
+    return list(filter(lambda entity: self.is_colliding_with(entity), entities))
 
   def is_colliding_with(self, entity):
-    return entity.x is self.x and entity.y is self.y and entity is not self
+    return entity.x == self.x and entity.y == self.y and entity != self
 
   def pluck(self, level):
     level.entities.remove(self)
@@ -76,7 +76,7 @@ class Hero (Entity):
     self.get_zaps()['quantity'] -= 1
 
   def get_zaps(self):
-    return reduce(lambda a, b: a if a['name'] is 'Zapgun Charges' else b, self.inventory)
+    return reduce(lambda a, b: a if a['name'] == 'Zapgun Charges' else b, self.inventory)
 
 
 class Enemy (Entity):
@@ -119,7 +119,7 @@ class Zap (Entity):
     self.categories.extend(['zap'])
 
   def char(self):
-    return '|' if self.velocity.x is 0 else '-'
+    return '|' if self.velocity.x == 0 else '-'
 
   def color(self): # pragma: no cover
     return Color.use('white')

@@ -1,3 +1,5 @@
+from functools import reduce
+
 class CollisionController:
 
   def __init__(self, level):

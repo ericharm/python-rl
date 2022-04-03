@@ -1,7 +1,7 @@
-from level import Level
-from game_input_controller import GameInputController
-from entity import Hero
-from util import Color
+from src.level import Level
+from src.game_input_controller import GameInputController
+from src.entity import Hero
+from src.util import Color
 import curses
 import random
 
@@ -26,7 +26,7 @@ class Game:
     return self.player.handle_input(key)
 
   def update(self):
-    if self.hero.state is 'moving':
+    if self.hero.state == 'moving':
       self.level.update()
 
   def display_heading(self, window): # pragma: no cover
@@ -43,9 +43,9 @@ class Game:
 
   def print_inventory(self, window,inv): #pragma: no cover
     for i in range(0, len(inv)):
-      name_x = 1 if i % 2 is 0 else 40
-      name_y = (i / 2) + 1
-      q_x = 20 if name_x is 1 else 61
+      name_x = 1 if i % 2 == 0 else 40
+      name_y = int(i / 2) + 1
+      q_x = 20 if name_x == 1 else 61
       q_y = name_y
       window.addstr(name_y, name_x, inv[i]['name'], Color.use('white'))
       window.addstr(q_y, q_x, str(inv[i]['quantity']), Color.use('white'))

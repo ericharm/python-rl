@@ -1,6 +1,6 @@
-from tile import Tile
-from entity import Enemy
-from collision_controller import CollisionController
+from src.tile import Tile
+from src.entity import Enemy
+from src.collision_controller import CollisionController
 import random
 
 class Level:
@@ -102,7 +102,7 @@ class Level:
 
   def odd_number(self, min_, max_):
     number = (random.randint(min_, max_))
-    if (number % 2 is 0):
+    if (number % 2 == 0):
       return number + 1
     else:
       return number
@@ -170,7 +170,7 @@ class Level:
       for row in range(0, self.height):
         tile = self.tiles[column][row]
         adjacents = self.get_adjacent_tiles(column, row)
-        if (tile.type is "corridor" and tile.dead_end(adjacents)):
+        if (tile.type == "corridor" and tile.dead_end(adjacents)):
           tile.set_type("empty");
 
 
@@ -194,7 +194,7 @@ class Room:
       colliding_rooms = list(
           filter(lambda room: self.collides_with_room(room), rooms)
       )
-      return (len(colliding_rooms) is 0)
+      return (len(colliding_rooms) == 0)
 
   def within_level(self, level):
     return (self.x + self.width < level.width and

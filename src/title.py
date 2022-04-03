@@ -1,5 +1,5 @@
-from util import Color
-from game import Game
+from src.util import Color
+from src.game import Game
 
 class Title:
 
@@ -20,7 +20,7 @@ class Title:
       line += 1
 
   def handle_input(self, key):
-    if key is 'q':
+    if key == 'q':
       return False
     elif key == 'KEY_DOWN' and self.current_option < len(self.options) - 1:
       self.current_option += 1

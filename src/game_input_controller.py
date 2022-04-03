@@ -1,5 +1,5 @@
-from entity import Zap
-from util import Vector
+from src.entity import Zap
+from src.util import Vector
 
 class GameInputController:
 
@@ -14,9 +14,9 @@ class GameInputController:
       }
 
   def handle_input(self, key):
-    if (self.hero.state is "moving"):
+    if (self.hero.state == "moving"):
       return self.handle_movement_action(key)
-    elif (self.hero.state is "aiming"):
+    elif (self.hero.state == "aiming"):
       return self.handle_aiming_action(key)
 
   def handle_movement_action(self, key):
@@ -26,13 +26,13 @@ class GameInputController:
     if (key in self.movement_keys.keys()):
       vector = self.movement_keys[key]
       self.hero.move(vector[0], vector[1], self.game.level);
-    elif (key is ">" and tiles[x][y].type is "stairs_down"):
+    elif (key == ">" and tiles[x][y].type == "stairs_down"):
       self.game.descend_stairs()
-    elif (key is "<" and tiles[x][y].type is "stairs_up"):
+    elif (key == "<" and tiles[x][y].type == "stairs_up"):
       self.game.ascend_stairs()
-    elif (key is " "):
+    elif (key == " "):
         self.hero.set_aiming()
-    elif (key is "q"):
+    elif (key == "q"):
       return False
 
   def handle_aiming_action(self, key):
