@@ -3,11 +3,11 @@ from src.game_input_controller import GameInputController
 from src.entity import Hero
 from src.util import Color
 import curses
-import random
 
 class Game:
 
   def __init__(self, config, state_stack):
+    del state_stack
     self.config = config
     self.level = self.generate_first_level()
     self.current_level = 0

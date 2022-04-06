@@ -33,7 +33,7 @@ class Level:
     self.generate_rooms()
     self.generate_corridors()
     self.insert_rooms()
-    for times in range(0, 20):
+    for _ in range(0, 20):
       self.remove_dead_ends()
     self.insert_enemies()
     for column in self.tiles:
@@ -59,7 +59,7 @@ class Level:
 
   def generate_rooms(self):
     room_config = self.config['rooms']
-    for attempt in range(0, room_config['generation_attempts']):
+    for _ in range(0, room_config['generation_attempts']):
       room = self.generate_odd_sized_room(room_config)
       if (room.isolated_from_rooms(self.rooms) and room.within_level(self)):
         self.rooms.append(room)

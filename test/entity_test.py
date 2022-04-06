@@ -28,7 +28,9 @@ class EntityTest(unittest.TestCase):
     self.assertEqual(5, hero.distance_from_entity(enemy))
 
   def test_default_update_just_returns_true(self):
-    self.assertTrue(Entity(0,0).update(Level(self.config)))
+    entity = Entity(0, 0)
+    level = Level(self.config)
+    self.assertTrue(entity.update(level))
 
   def test_default_char_is_a_blank_space(self):
     self.assertEqual(' ', Entity(0,0).char())

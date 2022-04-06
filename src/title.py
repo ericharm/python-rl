@@ -13,7 +13,7 @@ class Title:
     body = windows['body']
     body.clear()
     line = 10
-    body.addstr(line - 2, 20, 'SPACE JAIL', Color.use('red'))
+    body.addstr(line - 2, 20, 'ROGUE PY', Color.use('red'))
     body.addstr(line + self.current_option, 20, '#', Color.use('blue'))
     for option in self.options:
       body.addstr(line, 22, option.capitalize(), Color.use('white'))

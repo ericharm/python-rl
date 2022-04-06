@@ -13,7 +13,7 @@ class Pather:
   def get_path(self, goal):
     while not self.frontier.empty():
       current = self.frontier.get()
-      
+
       if current == goal:
         return self.paths[current]
 

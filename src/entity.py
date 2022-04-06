@@ -31,6 +31,7 @@ class Entity:
     return screen.addstr(self.y, self.x, self.char(), self.color())
 
   def update(self, level):
+    del level
     return True
 
   def distance_from_entity(self, entity):
@@ -101,7 +102,7 @@ class Enemy (Entity):
     hero_tile = reduce(lambda a, b: a if a.x is hero.x and a.y is hero.y else b, tiles)
     pather = Pather(my_tile, level)
     path = pather.get_path(hero_tile)
-    if len(path) > 0:
+    if path != None and len(path) > 0:
       self.x = path[0][0]
       self.y = path[0][1]
 

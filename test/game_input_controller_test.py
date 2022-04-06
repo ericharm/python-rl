@@ -1,6 +1,7 @@
 import os
 import sys
 import unittest
+from functools import reduce
 
 sys.path.insert(0,os.path.abspath(__file__+"/../.."))
 
@@ -21,7 +22,7 @@ class GameInputControllerTest(unittest.TestCase):
     game.hero.y = 0
 
   def remove_enemies(self, game):
-    enemies = filter(lambda entity: 'enemy' in entity.categories, game.level.entities)
+    enemies = list(filter(lambda entity: 'enemy' in entity.categories, game.level.entities))
     for enemy in enemies:
       game.level.entities.remove(enemy)
 
@@ -35,7 +36,7 @@ class GameInputControllerTest(unittest.TestCase):
     self.input_controller.handle_input(' ')
     self.input_controller.handle_input('KEY_DOWN')
     self.assertEqual('moving', self.input_controller.hero.state)
-    zap = reduce(lambda a, b: a if a.x is 0 and a.y is 1 else b, game.level.entities)
+    zap = reduce(lambda a, b: a if a.x == 0 and a.y == 1 else b, game.level.entities)
     self.assertIsInstance(zap, Zap)
     self.assertEqual(2, len(game.level.entities))
 
