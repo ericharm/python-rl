@@ -1,6 +1,6 @@
 from src.tile import Tile
 from src.entity import Enemy
-from src.collision_controller import CollisionController
+from src.collision_detector import CollisionDetector
 import random
 
 
@@ -11,7 +11,7 @@ class Level:
         self.entities = []
         self.plucked = []
         self.rooms = []
-        self.collision_controller = CollisionController(self)
+        self.collision_detector = CollisionDetector()
         self.width = config["width"]
         self.height = config["height"]
         self.flattened_tiles = []
@@ -26,7 +26,14 @@ class Level:
     def update(self):
         for entity in reversed(self.entities):
             entity.update(self)
-        self.collision_controller.handle_collisions(self.entities)
+        pairs = self.collision_detector.get_colliding_pairs(self.entities)
+        for pair in pairs:
+            self.dispatch_collision_actions(pair)
+
+    def dispatch_collision_actions(self, pair) -> None:
+        if pair.has_control_categories("zap", "shootable"):
+            for entity in pair:
+                entity.pluck(self)
 
     def generate(self):
         self.create_empty_tiles()

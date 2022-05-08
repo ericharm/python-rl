@@ -1,15 +1,18 @@
+import curses
+from typing import Optional
 from src.util import Color
 from src.game import Game
+from src.state import State
 
 
-class Title:
-    def __init__(self, config, state_stack):
+class Title(State):
+    def __init__(self, config: dict, state_stack: list[State]):
         self.config = config
         self.state_stack = state_stack
         self.options = ["start", "exit"]
         self.current_option = 0
 
-    def draw(self, windows):  # pragma: no cover
+    def draw(self, windows: dict[str, curses.window]) -> None:  # pragma: no cover
         body = windows["body"]
         body.clear()
         line = 10
@@ -19,7 +22,7 @@ class Title:
             body.addstr(line, 22, option.capitalize(), Color.use("white"))
             line += 1
 
-    def handle_input(self, key):
+    def handle_input(self, key: str) -> Optional[bool]:
         if key == "q":
             return False
         elif key == "KEY_DOWN" and self.current_option < len(self.options) - 1:
@@ -30,12 +33,13 @@ class Title:
             return self.set_state()
         return True
 
-    def update(self):
+    def update(self) -> bool:
         return True
 
-    def set_state(self):
+    def set_state(self) -> Optional[bool]:
         if self.options[self.current_option] == "start":
             self.state_stack.remove(self)
             self.state_stack.append(Game(self.config, self.state_stack))
         if self.options[self.current_option] == "exit":
             return False
+        return None

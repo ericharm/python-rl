@@ -2,10 +2,11 @@ from src.level import Level
 from src.game_input_controller import GameInputController
 from src.entity import Hero
 from src.util import Color
+from src.state import State
 import curses
 
 
-class Game:
+class Game(State):
     def __init__(self, config, state_stack):
         del state_stack
         self.config = config

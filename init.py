@@ -9,12 +9,12 @@ with open("config/config.yml", "r") as stream:
         print(exc)
 
 
-def main(stdscr):
+def main(stdscr: curses.window) -> None:
     application = Application(config)
     application.run(stdscr)
 
 
-def init_curses():
+def init_curses() -> None:
     curses.initscr()
     curses.start_color()
     curses.curs_set(0)
